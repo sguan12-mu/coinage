@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Coinage</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- Parse server -->
+    <string name="back4app_server_url">https://parseapi.back4app.com/</string>
+    <string name="back4app_app_id">DZcZ5t4E5OwIQLRyPNYvprBQyD1G0Oy5nQlqrtpz</string>
+    <string name="back4app_client_key">rjp5DDCIPgdeIkkh5cbW5WlTD2SxObooqcDh5FZQ</string>
 </resources>
