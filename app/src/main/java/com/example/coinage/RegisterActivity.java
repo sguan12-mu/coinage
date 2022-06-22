@@ -16,8 +16,9 @@ import com.parse.SignUpCallback;
 
 public class RegisterActivity extends AppCompatActivity {
     public static final String TAG = "RegisterActivity";
-    private EditText etEmail;
-    private EditText etPassword;
+    private EditText etName;
+    private EditText etEmailReg;
+    private EditText etPasswordReg;
     private Button btnFinishRegister;
 
     @Override
@@ -25,15 +26,17 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
+        etName = findViewById(R.id.etName);
+        etEmailReg = findViewById(R.id.etEmailReg);
+        etPasswordReg = findViewById(R.id.etPasswordReg);
         btnFinishRegister = findViewById(R.id.btnFinishRegister);
         btnFinishRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
-                signupUser(email, password);
+                String name = etName.getText().toString();
+                String email = etEmailReg.getText().toString();
+                String password = etPasswordReg.getText().toString();
+                signupUser(name, email, password);
             }
         });
     }
@@ -44,9 +47,10 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private void signupUser(String email, String password) {
+    private void signupUser(String name, String email, String password) {
         ParseUser user = new ParseUser();
-        user.setUsername(email);
+        user.setUsername(name);
+        user.setEmail(email);
         user.setPassword(password);
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
