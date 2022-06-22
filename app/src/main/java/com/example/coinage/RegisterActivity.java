@@ -19,6 +19,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etName;
     private EditText etEmailReg;
     private EditText etPasswordReg;
+    private EditText etPasswordConfirm;
     private Button btnFinishRegister;
 
     @Override
@@ -29,6 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
         etName = findViewById(R.id.etName);
         etEmailReg = findViewById(R.id.etEmailReg);
         etPasswordReg = findViewById(R.id.etPasswordReg);
+        etPasswordConfirm = findViewById(R.id.etPasswordConfirm);
         btnFinishRegister = findViewById(R.id.btnFinishRegister);
         btnFinishRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +38,13 @@ public class RegisterActivity extends AppCompatActivity {
                 String name = etName.getText().toString();
                 String email = etEmailReg.getText().toString();
                 String password = etPasswordReg.getText().toString();
-                signupUser(name, email, password);
+                String passwordConfirm = etPasswordConfirm.getText().toString();
+                if (password.equals(passwordConfirm)) {
+                    signupUser(name, email, password);
+                }
+                else {
+                    Toast.makeText(RegisterActivity.this, "passwords don't match", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
