@@ -7,14 +7,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.coinage.LoginActivity;
 import com.example.coinage.MainActivity;
 import com.example.coinage.R;
+import com.parse.ParseUser;
 
 public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
@@ -38,7 +41,7 @@ public class ProfileFragment extends Fragment {
         btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goLoginActivity();
+                logoutUser();
             }
         });
     }
@@ -46,5 +49,13 @@ public class ProfileFragment extends Fragment {
     private void goLoginActivity() {
         Intent i = new Intent(getContext(), LoginActivity.class);
         startActivity(i);
+    }
+
+    private void logoutUser() {
+        ParseUser.logOut();
+        ParseUser currentUser = ParseUser.getCurrentUser();
+        if (currentUser == null) {
+            goLoginActivity();
+        }
     }
 }
