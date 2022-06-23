@@ -31,9 +31,9 @@ import java.util.Locale;
 public class AddFragment extends Fragment {
     public static final String TAG = "AddFragment";
 
-    final Calendar myCalendar= Calendar.getInstance();
-    String myFormat="MM/dd/yy";
-    SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+    public static final Calendar myCalendar = Calendar.getInstance();
+    public static final String myFormat="MM/dd/yy";
+    public static final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
     private EditText etDate;
     private EditText etAmount;
     private EditText etCategory;
