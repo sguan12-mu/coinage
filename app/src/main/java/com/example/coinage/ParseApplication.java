@@ -2,6 +2,7 @@ package com.example.coinage;
 
 import android.app.Application;
 
+import com.example.coinage.models.Transaction;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
@@ -10,6 +11,9 @@ public class ParseApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        // register parse models
+        ParseObject.registerSubclass(Transaction.class);
 
         Parse.initialize(new Parse.Configuration.Builder(this)
                 .applicationId(getString(R.string.back4app_app_id))
