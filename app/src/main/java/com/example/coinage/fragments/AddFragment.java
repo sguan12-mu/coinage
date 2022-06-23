@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -85,6 +86,11 @@ public class AddFragment extends Fragment {
                 try {
                     date = dateFormat.parse(etDate.getText().toString());
                     saveTransaction(date, amount, category, description);
+                    // return to Home view after transaction is saved
+                    FragmentTransaction fragmentTransaction = getActivity()
+                            .getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.frameLayout, new HomeFragment());
+                    fragmentTransaction.commit();
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
