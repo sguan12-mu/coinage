@@ -54,6 +54,7 @@ public class AddFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         etDate = view.findViewById(R.id.etDate);
+        // clicking the editText view for date will cause a date picker calendar to pop up
         DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
