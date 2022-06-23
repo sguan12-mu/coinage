@@ -49,6 +49,10 @@
         android:ems="10"
         android:hint="date"
         android:inputType="date"
+        android:clickable="false"
+        android:cursorVisible="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,7 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
         android:layout_marginTop="10dp"
-        android:digits="4"
         android:ems="10"
         android:hint="0.00"
         android:inputType="numberDecimal"
