@@ -29,9 +29,8 @@ public class HomeFragment extends Fragment {
     public static final String TAG = "HomeFragment";
 
     private RecyclerView rvTransactions;
-    protected TransactionsAdapter adapter;
-    protected List<Transaction> allTransactions;
-    private Button button;
+    private TransactionsAdapter adapter;
+    private List<Transaction> allTransactions;
     private Button button2;
 
     public HomeFragment() {
@@ -52,21 +51,13 @@ public class HomeFragment extends Fragment {
         allTransactions = new ArrayList<>();
         adapter = new TransactionsAdapter(getContext(), allTransactions);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        // set up recycler view
         rvTransactions.setAdapter(adapter);
         rvTransactions.setLayoutManager(linearLayoutManager);
+        // populate recycler view with transactions
         queryTransactions();
 
-        button = view.findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new DetailFragment());
-                fragmentTransaction.commit();
-            }
-        });
-
+        // (placeholder button, will replace with some representation of overall spending limit)
         button2 = view.findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,15 +71,11 @@ public class HomeFragment extends Fragment {
     }
 
     private void queryTransactions() {
-        // specify what type of data we want to query - Post.class
         ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
-        // include data referred by user key
+        // set query parameters
         query.include(Transaction.KEY_USER);
-        // limit query to latest 20 items
         query.setLimit(20);
-        // order posts by creation date (newest first)
         query.addDescendingOrder("createdAt");
-        // start an asynchronous call for posts
         query.findInBackground(new FindCallback<Transaction>() {
             @Override
             public void done(List<Transaction> transactions, ParseException e) {
@@ -97,7 +84,6 @@ public class HomeFragment extends Fragment {
                     Log.e(TAG, "Issue with getting transactions", e);
                     return;
                 }
-
                 // save received posts to list and notify adapter of new data
                 allTransactions.addAll(transactions);
                 adapter.notifyDataSetChanged();

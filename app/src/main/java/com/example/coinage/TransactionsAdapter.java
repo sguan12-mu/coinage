@@ -50,19 +50,16 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         holder.bind(transaction);
     }
 
-    // Clean all elements of the recycler
     public void clear() {
         transactions.clear();
         notifyDataSetChanged();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
         private TextView tvDate;
         private TextView tvAmount;
         private TextView tvCategory;
         private TextView tvDescription;
-
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -75,7 +72,6 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
         }
 
         public void bind(Transaction transaction) {
-            // Bind the post data to the view elements
             tvDate.setText(transaction.getDate().toString());
             tvAmount.setText("$"+transaction.getAmount().toString());
             tvCategory.setText(transaction.getCategory());
@@ -87,14 +83,13 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             int position = getAdapterPosition();
             // make sure the position is valid, i.e. actually exists in the view
             if (position != RecyclerView.NO_POSITION) {
-                // get the post at the position
                 Transaction transaction = transactions.get(position);
-                Log.i(TAG, "got transaction");
-                // create bundle (intents don't work from activity to fragment)
+                // create bundle of transaction (intents don't work from activity to fragment)
                 Fragment detailFragment = new DetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Transaction.class.getSimpleName(), transaction);
                 detailFragment.setArguments(bundle);
+                // switch to desired fragment
                 FragmentTransaction fragmentTransaction = ((AppCompatActivity)context)
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, detailFragment);

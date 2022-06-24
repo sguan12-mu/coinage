@@ -21,6 +21,7 @@ import com.parse.ParseUser;
 
 public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
+
     private Button btnLogout;
 
     public ProfileFragment() {

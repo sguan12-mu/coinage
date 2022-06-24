@@ -16,6 +16,7 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
+
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
@@ -68,8 +69,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void loginUser(String email, String password) {
+        if (email == null || password == null) {
+            Toast.makeText(LoginActivity.this, "field blank", Toast.LENGTH_SHORT).show();
+            return;
+        }
         ParseUser.logInInBackground(email, password, new LogInCallback() {
-            // should first check that email and password aren't null
             @Override
             public void done(ParseUser user, com.parse.ParseException e) {
                 if (e != null) {

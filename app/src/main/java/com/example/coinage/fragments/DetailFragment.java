@@ -42,9 +42,10 @@ public class DetailFragment extends Fragment {
         tvCategoryDetail = view.findViewById(R.id.tvCategoryDetail);
         tvDescriptionDetail = view.findViewById(R.id.tvDescriptionDetail);
 
+        // get transaction from bundle
         Bundle bundle = getArguments();
         transaction = bundle.getParcelable(Transaction.class.getSimpleName());
-
+        // set and display information
         tvDateDetail.setText(transaction.getDate().toString());
         tvAmountDetail.setText("$"+transaction.getAmount().toString());
         tvCategoryDetail.setText(transaction.getCategory());

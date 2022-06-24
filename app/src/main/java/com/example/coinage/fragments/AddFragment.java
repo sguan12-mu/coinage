@@ -56,8 +56,13 @@ public class AddFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         etDate = view.findViewById(R.id.etDate);
+        etAmount = view.findViewById(R.id.etAmount);
+        etCategory = view.findViewById(R.id.etCategory);
+        etDescription = view.findViewById(R.id.etDescription);
+        btnAdd = view.findViewById(R.id.btnAdd);
+
         // clicking the editText view for date will cause a date picker calendar to pop up
-        DatePickerDialog.OnDateSetListener date =new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 myCalendar.set(Calendar.YEAR, year);
@@ -73,10 +78,7 @@ public class AddFragment extends Fragment {
             }
         });
 
-        etAmount = view.findViewById(R.id.etAmount);
-        etCategory = view.findViewById(R.id.etCategory);
-        etDescription = view.findViewById(R.id.etDescription);
-        btnAdd = view.findViewById(R.id.btnAdd);
+        // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +101,7 @@ public class AddFragment extends Fragment {
             }
         });
     }
+
     private void saveTransaction(ParseUser currentUser, Date date, BigDecimal amount, String category, String description) {
         Transaction transaction = new Transaction();
         transaction.setUser(currentUser);
