@@ -1,13 +1,19 @@
 package com.example.coinage.models;
 
+import android.icu.text.SimpleDateFormat;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
+import java.text.ParseException;
 import java.util.Date;
+import java.util.Locale;
 
 @ParseClassName("Transaction")
 public class Transaction extends ParseObject {
+    public static final String myFormat="MM/dd/yy";
+    public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
     public static final String KEY_USER = "user";
     public static final String KEY_DATE = "date";
     public static final String KEY_AMOUNT = "amount";
@@ -22,8 +28,8 @@ public class Transaction extends ParseObject {
         put(KEY_USER, user);
     }
 
-    public Date getDate() {
-        return getDate(KEY_DATE);
+    public String getDate() {
+        return String.valueOf(dateFormat.format(getDate(KEY_DATE)));
     }
 
     public void setDate(Date date) {

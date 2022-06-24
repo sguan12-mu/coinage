@@ -1,5 +1,6 @@
 package com.example.coinage.fragments;
 
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -15,9 +16,14 @@ import android.widget.TextView;
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
 
+import java.util.Date;
+import java.util.Locale;
+
 public class DetailFragment extends Fragment {
     public static final String TAG = "DetailFragment";
 
+    public static final String myFormat="MM/dd/yy";
+    public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
     private TextView tvDateDetail;
     private TextView tvAmountDetail;
     private TextView tvCategoryDetail;
@@ -46,7 +52,7 @@ public class DetailFragment extends Fragment {
         Bundle bundle = getArguments();
         transaction = bundle.getParcelable(Transaction.class.getSimpleName());
         // set and display information
-        tvDateDetail.setText(transaction.getDate().toString());
+        tvDateDetail.setText(transaction.getDate());
         tvAmountDetail.setText("$"+transaction.getAmount().toString());
         tvCategoryDetail.setText(transaction.getCategory());
         tvDescriptionDetail.setText(transaction.getDescription());

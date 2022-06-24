@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="6/24/22"
+        android:text="__/__/__"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
-        android:text="$123534.23"
+        android:text="$__.__"
         app:layout_constraintStart_toEndOf="@+id/tvDate"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="16dp"
-        android:text="food"
+        android:text="category"
         app:layout_constraintStart_toEndOf="@+id/tvAmount"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="13dp"
         android:layout_marginTop="16dp"
-        android:text="sushi yay"
+        android:text="description of purchase"
         app:layout_constraintStart_toEndOf="@+id/tvCategory"
         app:layout_constraintTop_toTopOf="parent" />
 

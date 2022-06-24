@@ -2,6 +2,7 @@ package com.example.coinage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,13 +20,18 @@ import com.example.coinage.fragments.DetailFragment;
 import com.example.coinage.fragments.HomeFragment;
 import com.example.coinage.models.Transaction;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapter.ViewHolder> {
     public static final String TAG = "TransactionsAdapter";
 
     private Context context;
     private List<Transaction> transactions;
+    public static final String myFormat="MM/dd/yy";
+    public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
 
     public TransactionsAdapter(Context context, List<Transaction> transactions) {
         this.context = context;
@@ -47,7 +53,11 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Transaction transaction = transactions.get(position);
-        holder.bind(transaction);
+        try {
+            holder.bind(transaction);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public void clear() {
@@ -71,8 +81,9 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             itemView.setOnClickListener(this::onClick);
         }
 
-        public void bind(Transaction transaction) {
-            tvDate.setText(transaction.getDate().toString());
+        public void bind(Transaction transaction) throws ParseException {
+            Date date = dateFormat.parse(transaction.getDate().toString());
+            tvDate.setText(transaction.getDate());
             tvAmount.setText("$"+transaction.getAmount().toString());
             tvCategory.setText(transaction.getCategory());
             tvDescription.setText(transaction.getDescription());
