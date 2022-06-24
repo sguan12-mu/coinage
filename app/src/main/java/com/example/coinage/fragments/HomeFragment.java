@@ -6,17 +6,31 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.coinage.R;
+import com.example.coinage.TransactionsAdapter;
+import com.example.coinage.models.Transaction;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
     public static final String TAG = "HomeFragment";
 
+    private RecyclerView rvTransactions;
+    protected TransactionsAdapter adapter;
+    protected List<Transaction> allTransactions;
     private Button button;
     private Button button2;
 
@@ -33,6 +47,14 @@ public class HomeFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        rvTransactions = view.findViewById(R.id.rvTransactions);
+        allTransactions = new ArrayList<>();
+        adapter = new TransactionsAdapter(getContext(), allTransactions);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rvTransactions.setAdapter(adapter);
+        rvTransactions.setLayoutManager(linearLayoutManager);
+        queryTransactions();
 
         button = view.findViewById(R.id.button);
         button.setOnClickListener(new View.OnClickListener() {
@@ -53,6 +75,32 @@ public class HomeFragment extends Fragment {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, new OverviewFragment());
                 fragmentTransaction.commit();
+            }
+        });
+    }
+
+    private void queryTransactions() {
+        // specify what type of data we want to query - Post.class
+        ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
+        // include data referred by user key
+        query.include(Transaction.KEY_USER);
+        // limit query to latest 20 items
+        query.setLimit(20);
+        // order posts by creation date (newest first)
+        query.addDescendingOrder("createdAt");
+        // start an asynchronous call for posts
+        query.findInBackground(new FindCallback<Transaction>() {
+            @Override
+            public void done(List<Transaction> transactions, ParseException e) {
+                // check for errors
+                if (e != null) {
+                    Log.e(TAG, "Issue with getting transactions", e);
+                    return;
+                }
+
+                // save received posts to list and notify adapter of new data
+                allTransactions.addAll(transactions);
+                adapter.notifyDataSetChanged();
             }
         });
     }

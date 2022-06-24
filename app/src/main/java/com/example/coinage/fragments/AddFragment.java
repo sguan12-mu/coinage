@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
+import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.math.BigDecimal;
@@ -31,9 +32,9 @@ import java.util.Locale;
 public class AddFragment extends Fragment {
     public static final String TAG = "AddFragment";
 
-    public static final Calendar myCalendar = Calendar.getInstance();
+    public final Calendar myCalendar = Calendar.getInstance();
     public static final String myFormat="MM/dd/yy";
-    public static final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+    public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
     private EditText etDate;
     private EditText etAmount;
     private EditText etCategory;
@@ -79,13 +80,14 @@ public class AddFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                ParseUser currentUser = ParseUser.getCurrentUser();
                 BigDecimal amount = new BigDecimal(etAmount.getText().toString());
                 String category = etCategory.getText().toString();
                 String description = etDescription.getText().toString();
                 Date date;
                 try {
                     date = dateFormat.parse(etDate.getText().toString());
-                    saveTransaction(date, amount, category, description);
+                    saveTransaction(currentUser, date, amount, category, description);
                     // return to Home view after transaction is saved
                     FragmentTransaction fragmentTransaction = getActivity()
                             .getSupportFragmentManager().beginTransaction();
@@ -97,8 +99,9 @@ public class AddFragment extends Fragment {
             }
         });
     }
-    private void saveTransaction(Date date, BigDecimal amount, String category, String description) {
+    private void saveTransaction(ParseUser currentUser, Date date, BigDecimal amount, String category, String description) {
         Transaction transaction = new Transaction();
+        transaction.setUser(currentUser);
         transaction.setDate(date);
         transaction.setAmount(amount);
         transaction.setCategory(category);

@@ -26,6 +26,11 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null) {
+            ParseUser.logOut();
+        }
+
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
 
@@ -48,13 +53,15 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void goHomeActivity() {
+    private void goMainActivity() {
+        Log.i(TAG, "go main activity");
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
     private void goRegisterActivity() {
+        Log.i(TAG, "go register activity");
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
         finish();
@@ -70,7 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "issue with login", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                goHomeActivity();
+                goMainActivity();
             }
         });
     }

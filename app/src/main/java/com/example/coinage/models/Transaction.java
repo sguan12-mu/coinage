@@ -2,15 +2,25 @@ package com.example.coinage.models;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.Date;
 
 @ParseClassName("Transaction")
 public class Transaction extends ParseObject {
+    public static final String KEY_USER = "user";
     public static final String KEY_DATE = "date";
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_CATEGORY = "category";
     public static final String KEY_DESCRIPTION = "description";
+
+    public ParseUser getUser() {
+        return getParseUser(KEY_USER);
+    }
+
+    public void setUser(ParseUser user) {
+        put(KEY_USER, user);
+    }
 
     public Date getDate() {
         return getDate(KEY_DATE);
