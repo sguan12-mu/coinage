@@ -10,9 +10,11 @@
         android:id="@+id/tvDateDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="180dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="132dp"
         android:text="__/__/__"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,9 +22,10 @@
         android:id="@+id/tvAmountDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="183dp"
-        android:layout_marginTop="35dp"
-        android:text="$12.12"
+        android:layout_marginTop="24dp"
+        android:text="$__.__"
+        android:textSize="34sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDateDetail" />
 
@@ -30,9 +33,10 @@
         android:id="@+id/tvCategoryDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="191dp"
-        android:layout_marginTop="30dp"
-        android:text="food"
+        android:layout_marginTop="28dp"
+        android:text="category"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvAmountDetail" />
 
@@ -40,9 +44,10 @@
         android:id="@+id/tvDescriptionDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="127dp"
-        android:layout_marginTop="35dp"
-        android:text="got sushi it was delicious"
+        android:layout_marginTop="24dp"
+        android:text="description of purchase"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvCategoryDetail" />
 </androidx.constraintlayout.widget.ConstraintLayout>
