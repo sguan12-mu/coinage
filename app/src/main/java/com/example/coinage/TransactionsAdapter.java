@@ -1,6 +1,8 @@
 package com.example.coinage;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +10,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.coinage.fragments.DetailFragment;
+import com.example.coinage.fragments.HomeFragment;
 import com.example.coinage.models.Transaction;
 
 import java.util.List;
@@ -83,6 +90,15 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                 // get the post at the position
                 Transaction transaction = transactions.get(position);
                 Log.i(TAG, "got transaction");
+                // create bundle (intents don't work from activity to fragment)
+                Fragment detailFragment = new DetailFragment();
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Transaction.class.getSimpleName(), transaction);
+                detailFragment.setArguments(bundle);
+                FragmentTransaction fragmentTransaction = ((AppCompatActivity)context)
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, detailFragment);
+                fragmentTransaction.addToBackStack(TransactionsAdapter.class.getSimpleName()).commit();
             }
         }
     }

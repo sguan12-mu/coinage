@@ -6,14 +6,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.coinage.R;
+import com.example.coinage.models.Transaction;
 
 public class DetailFragment extends Fragment {
     public static final String TAG = "DetailFragment";
+
+    private TextView tvDateDetail;
+    private TextView tvAmountDetail;
+    private TextView tvCategoryDetail;
+    private TextView tvDescriptionDetail;
+    private Transaction transaction;
 
     public DetailFragment() {
         // Required empty public constructor
@@ -28,5 +37,17 @@ public class DetailFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvDateDetail = view.findViewById(R.id.tvDateDetail);
+        tvAmountDetail = view.findViewById(R.id.tvAmountDetail);
+        tvCategoryDetail = view.findViewById(R.id.tvCategoryDetail);
+        tvDescriptionDetail = view.findViewById(R.id.tvDescriptionDetail);
+
+        Bundle bundle = getArguments();
+        transaction = bundle.getParcelable(Transaction.class.getSimpleName());
+
+        tvDateDetail.setText(transaction.getDate().toString());
+        tvAmountDetail.setText("$"+transaction.getAmount().toString());
+        tvCategoryDetail.setText(transaction.getCategory());
+        tvDescriptionDetail.setText(transaction.getDescription());
     }
 }
