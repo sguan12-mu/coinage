@@ -115,7 +115,7 @@ public class AddTransactionFragment extends Fragment {
                 if (e != null) {
                     Log.e(TAG, "error while adding purchase", e);
                 }
-                Log.i(TAG, "purchase added");
+                Log.i(TAG, "purchase added to database");
             }
         });
     }

@@ -56,14 +56,14 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goMainActivity() {
-        Log.i(TAG, "go main activity");
+        Log.i(TAG, "proceed to app (default page is transaction list)");
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
     private void goRegisterActivity() {
-        Log.i(TAG, "go register activity");
+        Log.i(TAG, "go to register user activity");
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
         finish();
