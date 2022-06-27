@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
 
-import java.util.Date;
 import java.util.Locale;
 
 public class DetailFragment extends Fragment {
@@ -43,7 +41,7 @@ public class DetailFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvDateDetail = view.findViewById(R.id.tvDateDetail);
+        tvDateDetail = view.findViewById(R.id.tvName);
         tvAmountDetail = view.findViewById(R.id.tvAmountDetail);
         tvCategoryDetail = view.findViewById(R.id.tvCategoryDetail);
         tvDescriptionDetail = view.findViewById(R.id.tvDescriptionDetail);

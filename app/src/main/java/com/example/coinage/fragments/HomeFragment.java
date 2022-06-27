@@ -62,12 +62,16 @@ public class HomeFragment extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new OverviewFragment());
-                fragmentTransaction.commit();
+                goOverview();
             }
         });
+    }
+
+    private void goOverview() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new OverviewFragment());
+        fragmentTransaction.commit();
     }
 
     private void queryTransactions() {
