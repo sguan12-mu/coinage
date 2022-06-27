@@ -16,6 +16,7 @@ import com.parse.ParseUser;
 
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
+
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
@@ -25,6 +26,11 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        ParseUser user = ParseUser.getCurrentUser();
+        if (user != null) {
+            ParseUser.logOut();
+        }
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
@@ -48,21 +54,26 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void goHomeActivity() {
+    private void goMainActivity() {
+        Log.i(TAG, "go main activity");
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
     }
 
     private void goRegisterActivity() {
+        Log.i(TAG, "go register activity");
         Intent i = new Intent(this, RegisterActivity.class);
         startActivity(i);
         finish();
     }
 
     private void loginUser(String email, String password) {
+        if (email == null || password == null) {
+            Toast.makeText(LoginActivity.this, "field blank", Toast.LENGTH_SHORT).show();
+            return;
+        }
         ParseUser.logInInBackground(email, password, new LogInCallback() {
-            // should first check that email and password aren't null
             @Override
             public void done(ParseUser user, com.parse.ParseException e) {
                 if (e != null) {
@@ -70,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(LoginActivity.this, "issue with login", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                goHomeActivity();
+                goMainActivity();
             }
         });
     }

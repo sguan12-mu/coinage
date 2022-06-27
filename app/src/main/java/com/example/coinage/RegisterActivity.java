@@ -16,6 +16,7 @@ import com.parse.SignUpCallback;
 
 public class RegisterActivity extends AppCompatActivity {
     public static final String TAG = "RegisterActivity";
+
     private EditText etName;
     private EditText etEmailReg;
     private EditText etPasswordReg;
@@ -32,6 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
         etPasswordReg = findViewById(R.id.etPasswordReg);
         etPasswordConfirm = findViewById(R.id.etPasswordConfirm);
         btnFinishRegister = findViewById(R.id.btnFinishRegister);
+
         btnFinishRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

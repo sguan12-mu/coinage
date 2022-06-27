@@ -15,7 +15,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
-    final FragmentManager fragmentManager = getSupportFragmentManager();
+
+    public final FragmentManager fragmentManager = getSupportFragmentManager();
     private BottomNavigationView bottomNavigationView;
 
     @Override
