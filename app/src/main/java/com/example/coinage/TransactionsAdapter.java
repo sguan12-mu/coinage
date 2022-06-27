@@ -1,10 +1,8 @@
 package com.example.coinage;
 
 import android.content.Context;
-import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.coinage.fragments.DetailFragment;
-import com.example.coinage.fragments.HomeFragment;
+import com.example.coinage.fragments.TransactionDetailFragment;
 import com.example.coinage.models.Transaction;
 
 import java.text.ParseException;
@@ -96,7 +93,7 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
             if (position != RecyclerView.NO_POSITION) {
                 Transaction transaction = transactions.get(position);
                 // create bundle of transaction (intents don't work from activity to fragment)
-                Fragment detailFragment = new DetailFragment();
+                Fragment detailFragment = new TransactionDetailFragment();
                 Bundle bundle = new Bundle();
                 bundle.putParcelable(Transaction.class.getSimpleName(), transaction);
                 detailFragment.setArguments(bundle);

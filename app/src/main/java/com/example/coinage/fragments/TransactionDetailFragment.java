@@ -17,8 +17,9 @@ import com.example.coinage.models.Transaction;
 
 import java.util.Locale;
 
-public class DetailFragment extends Fragment {
-    public static final String TAG = "DetailFragment";
+// displays information (date, amount, category, description) about a specific transaction
+public class TransactionDetailFragment extends Fragment {
+    public static final String TAG = "TransactionDetailFragment";
 
     public static final String myFormat="MM/dd/yy";
     public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
@@ -28,7 +29,7 @@ public class DetailFragment extends Fragment {
     private TextView tvDescriptionDetail;
     private Transaction transaction;
 
-    public DetailFragment() {
+    public TransactionDetailFragment() {
         // Required empty public constructor
     }
 
@@ -36,7 +37,7 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_detail, container, false);
+        return inflater.inflate(R.layout.fragment_detail_fragment, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

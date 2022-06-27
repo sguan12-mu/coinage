@@ -25,15 +25,16 @@ import com.parse.ParseQuery;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomeFragment extends Fragment {
-    public static final String TAG = "HomeFragment";
+// home page of app, displays a list of all tracked transactions
+public class TransactionListFragment extends Fragment {
+    public static final String TAG = "TransactionListFragment";
 
     private RecyclerView rvTransactions;
     private TransactionsAdapter adapter;
     private List<Transaction> allTransactions;
     private Button button2;
 
-    public HomeFragment() {
+    public TransactionListFragment() {
         // Required empty public constructor
     }
 
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
     private void goOverview() {
         FragmentTransaction fragmentTransaction = getActivity()
                 .getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, new OverviewFragment());
+        fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitOverviewFragment());
         fragmentTransaction.commit();
     }
 

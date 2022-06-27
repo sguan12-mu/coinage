@@ -6,8 +6,8 @@ import com.example.coinage.models.Transaction;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+// initializes parse sdk as soon as the application is created
 public class ParseApplication extends Application {
-    // initializes parse sdk as soon as the application is created
     @Override
     public void onCreate() {
         super.onCreate();

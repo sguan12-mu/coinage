@@ -12,10 +12,11 @@ import android.view.ViewGroup;
 
 import com.example.coinage.R;
 
-public class OverviewFragment extends Fragment {
-    public static final String TAG = "OverviewFragment";
+// includes different charts and graphics for user's spending limits
+public class SpendingLimitOverviewFragment extends Fragment {
+    public static final String TAG = "SpendingLimitOverviewFragment";
 
-    public OverviewFragment() {
+    public SpendingLimitOverviewFragment() {
         // Required empty public constructor
     }
 
@@ -23,7 +24,7 @@ public class OverviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_overview, container, false);
+        return inflater.inflate(R.layout.fragment_spending_limit_overview, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
