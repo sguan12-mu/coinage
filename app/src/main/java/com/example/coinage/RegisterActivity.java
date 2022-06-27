@@ -14,6 +14,7 @@ import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
 
+// register new user with name, email, password
 public class RegisterActivity extends AppCompatActivity {
     public static final String TAG = "RegisterActivity";
 
@@ -51,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-    private void goHomeActivity() {
+    private void goMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();
@@ -65,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
         user.signUpInBackground(new SignUpCallback() {
             public void done(ParseException e) {
                 if (e == null) {
-                    goHomeActivity();
+                    goMainActivity();
                 } else {
                     Log.e(TAG, "issue with register", e);
                     Toast.makeText(RegisterActivity.this, "issue with register", Toast.LENGTH_SHORT).show();

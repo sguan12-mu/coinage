@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
@@ -29,8 +28,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class AddFragment extends Fragment {
-    public static final String TAG = "AddFragment";
+// track a new transaction by entering information (date, amount, category, description)
+public class AddTransactionFragment extends Fragment {
+    public static final String TAG = "AddTransactionFragment";
 
     public final Calendar myCalendar = Calendar.getInstance();
     public static final String myFormat="MM/dd/yy";
@@ -41,7 +41,7 @@ public class AddFragment extends Fragment {
     private EditText etDescription;
     private Button btnAdd;
 
-    public AddFragment() {
+    public AddTransactionFragment() {
         // Required empty public constructor
     }
 
@@ -49,7 +49,7 @@ public class AddFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add, container, false);
+        return inflater.inflate(R.layout.fragment_add_transaction, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class AddFragment extends Fragment {
                     // return to Home view after transaction is saved
                     FragmentTransaction fragmentTransaction = getActivity()
                             .getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frameLayout, new HomeFragment());
+                    fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
                     fragmentTransaction.commit();
                 } catch (ParseException e) {
                     e.printStackTrace();

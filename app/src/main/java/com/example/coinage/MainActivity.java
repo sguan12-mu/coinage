@@ -8,11 +8,12 @@ import androidx.fragment.app.FragmentManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.example.coinage.fragments.AddFragment;
-import com.example.coinage.fragments.HomeFragment;
+import com.example.coinage.fragments.AddTransactionFragment;
+import com.example.coinage.fragments.TransactionListFragment;
 import com.example.coinage.fragments.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+// fragment container and bottom navigation activity
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "MainActivity";
 
@@ -32,10 +33,10 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()) {
                     case R.id.action_home:
                     default:
-                        fragment = new HomeFragment();
+                        fragment = new TransactionListFragment();
                         break;
                     case R.id.action_add:
-                        fragment = new AddFragment();
+                        fragment = new AddTransactionFragment();
                         break;
                     case R.id.action_profile:
                         fragment = new ProfileFragment();

@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseUser;
 
+// users log in to their account with username or email and password
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
 

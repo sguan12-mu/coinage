@@ -19,6 +19,7 @@ import com.example.coinage.MainActivity;
 import com.example.coinage.R;
 import com.parse.ParseUser;
 
+// profile information and settings page
 public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
 
