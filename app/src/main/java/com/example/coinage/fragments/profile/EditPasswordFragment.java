@@ -61,11 +61,9 @@ public class EditPasswordFragment extends Fragment {
                 }
                 if (user == null) {
                     Toast.makeText(getContext(), "Incorrect current password", Toast.LENGTH_SHORT).show();
-                }
-                else if (!newPassword.equals(newPasswordConfirm)) {
+                } else if (!newPassword.equals(newPasswordConfirm)) {
                     Toast.makeText(getContext(), "Passwords don't match", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     // update password
                     ParseUser.getCurrentUser().setPassword(newPassword);
                     ParseUser.getCurrentUser().saveInBackground();

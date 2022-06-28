@@ -52,11 +52,9 @@ public class EditEmailFragment extends Fragment {
                 String newEmailConfirm = etNewEmailConfirm.getText().toString();
                 if (!currentEmail.equals(ParseUser.getCurrentUser().getEmail())) {
                     Toast.makeText(getContext(), "Incorrect current email", Toast.LENGTH_SHORT).show();
-                }
-                else if (!newEmail.equals(newEmailConfirm)) {
+                } else if (!newEmail.equals(newEmailConfirm)) {
                     Toast.makeText(getContext(), "Emails don't match", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     // update email
                     ParseUser.getCurrentUser().setEmail(newEmail);
                     ParseUser.getCurrentUser().saveInBackground();

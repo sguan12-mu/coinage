@@ -44,8 +44,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String passwordConfirm = etPasswordConfirm.getText().toString();
                 if (password.equals(passwordConfirm)) {
                     signupUser(name, email, password);
-                }
-                else {
+                } else {
                     Toast.makeText(RegisterActivity.this, "passwords don't match", Toast.LENGTH_SHORT).show();
                 }
             }

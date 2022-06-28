@@ -48,7 +48,7 @@ public class EditInfoFragment extends Fragment {
         tvNameEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "change name");
+                Log.i(TAG, "go to edit name fragment to change account username");
                 goEditName();
             }
         });
@@ -57,7 +57,7 @@ public class EditInfoFragment extends Fragment {
         clEmailEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "change email");
+                Log.i(TAG, "go to edit email fragment to change account email");
                 goEditEmail();
             }
         });
@@ -66,7 +66,7 @@ public class EditInfoFragment extends Fragment {
         clPasswordEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "change password");
+                Log.i(TAG, "go to edit password fragment to change account password");
                 goEditPassword();
             }
         });
@@ -77,8 +77,8 @@ public class EditInfoFragment extends Fragment {
     public void onResume() {
         super.onResume();
         // minimize keyboard input once returned to this fragment
-        InputMethodManager imm =(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+        InputMethodManager inputMethodManager =(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(getView().getWindowToken(), 0);
     }
 
     private void goEditName() {

@@ -63,12 +63,12 @@ public class TransactionListFragment extends Fragment {
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goOverview();
+                goSpendingLimitOverview();
             }
         });
     }
 
-    private void goOverview() {
+    private void goSpendingLimitOverview() {
         FragmentTransaction fragmentTransaction = getActivity()
                 .getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitOverviewFragment());
