@@ -1,6 +1,5 @@
-package com.example.coinage.fragments;
+package com.example.coinage.fragments.profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,19 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.coinage.LoginActivity;
-import com.example.coinage.MainActivity;
 import com.example.coinage.R;
 import com.parse.ParseUser;
 
 public class EditInfoFragment extends Fragment {
     public static final String TAG = "EditInfoFragment";
 
-    private TextView tvName2;
+    private TextView tvNameEditDisplay;
     private TextView tvNameEdit;
     private ConstraintLayout clEmailEdit;
 
@@ -43,8 +38,8 @@ public class EditInfoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        tvName2 = view.findViewById(R.id.tvName2);
-        tvName2.setText(ParseUser.getCurrentUser().getUsername());
+        tvNameEditDisplay = view.findViewById(R.id.tvNameEditDisplay);
+        tvNameEditDisplay.setText(ParseUser.getCurrentUser().getUsername());
 
         tvNameEdit = view.findViewById(R.id.tvNameEdit);
         tvNameEdit.setOnClickListener(new View.OnClickListener() {
@@ -58,10 +53,17 @@ public class EditInfoFragment extends Fragment {
         clEmailEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // change email
                 Log.i(TAG, "change email");
+                goEditEmail();
             }
         });
 
+    }
+
+    private void goEditEmail() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new EditEmailFragment());
+        fragmentTransaction.commit();
     }
 }

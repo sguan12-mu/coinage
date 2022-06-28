@@ -1,4 +1,4 @@
-package com.example.coinage.fragments;
+package com.example.coinage.fragments.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +19,11 @@ import com.example.coinage.MainActivity;
 import com.example.coinage.R;
 import com.parse.ParseUser;
 
-public class SetLimitsFragment extends Fragment {
-    public static final String TAG = "SetLimitsFragment";
+// profile information and settings page
+public class EditNameFragment extends Fragment {
+    public static final String TAG = "EditNameFragment";
 
-    public SetLimitsFragment() {
+    public EditNameFragment() {
         // Required empty public constructor
     }
 
@@ -31,7 +31,7 @@ public class SetLimitsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_set_limits, container, false);
+        return inflater.inflate(R.layout.fragment_edit_name, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

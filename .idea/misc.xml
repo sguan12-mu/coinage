@@ -9,7 +9,9 @@
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_add.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/fragment_edit_email.xml" value="0.1004130388579696" />
         <entry key="app/src/main/res/layout/fragment_edit_info.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_edit_name.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_overview.xml" value="0.11651469098277609" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.12462006079027356" />

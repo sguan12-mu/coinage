@@ -10,7 +10,7 @@ import android.view.MenuItem;
 
 import com.example.coinage.fragments.AddTransactionFragment;
 import com.example.coinage.fragments.TransactionListFragment;
-import com.example.coinage.fragments.ProfileFragment;
+import com.example.coinage.fragments.profile.ProfileFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 // fragment container and bottom navigation activity
