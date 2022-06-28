@@ -40,10 +40,10 @@ public class EditEmailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCurrentEmail = view.findViewById(R.id.etCurrentPassword);
+        etCurrentEmail = view.findViewById(R.id.etCurrentName);
         etNewEmail = view.findViewById(R.id.etNewPassword);
         etNewEmailConfirm = view.findViewById(R.id.etNewPasswordConfirm);
-        btnChangeEmail = view.findViewById(R.id.btnChangePassword);
+        btnChangeEmail = view.findViewById(R.id.btnChangeName);
         btnChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

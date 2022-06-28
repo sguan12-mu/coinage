@@ -48,7 +48,8 @@ public class EditInfoFragment extends Fragment {
         tvNameEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // change name
+                Log.i(TAG, "change name");
+                goEditName();
             }
         });
 
@@ -78,6 +79,13 @@ public class EditInfoFragment extends Fragment {
         // minimize keyboard input once returned to this fragment
         InputMethodManager imm =(InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+    }
+
+    private void goEditName() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new EditNameFragment());
+        fragmentTransaction.commit();
     }
 
     private void goEditEmail() {

@@ -41,10 +41,10 @@ public class EditPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCurrentPassword = view.findViewById(R.id.etCurrentPassword);
+        etCurrentPassword = view.findViewById(R.id.etCurrentName);
         etNewPassword = view.findViewById(R.id.etNewPassword);
         etNewPasswordConfirm = view.findViewById(R.id.etNewPasswordConfirm);
-        btnChangePassword = view.findViewById(R.id.btnChangePassword);
+        btnChangePassword = view.findViewById(R.id.btnChangeName);
         btnChangePassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
