@@ -1,6 +1,5 @@
 package com.example.coinage.fragments.profile;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.coinage.LoginActivity;
-import com.example.coinage.MainActivity;
 import com.example.coinage.R;
-import com.example.coinage.fragments.SpendingLimitOverviewFragment;
 import com.parse.ParseUser;
 
 // profile information and settings page
@@ -45,10 +40,10 @@ public class EditEmailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCurrentEmail = view.findViewById(R.id.etCurrentEmail);
-        etNewEmail = view.findViewById(R.id.etNewEmail);
-        etNewEmailConfirm = view.findViewById(R.id.etNewEmailConfirm);
-        btnChangeEmail = view.findViewById(R.id.btnChangeEmail);
+        etCurrentEmail = view.findViewById(R.id.etCurrentPassword);
+        etNewEmail = view.findViewById(R.id.etNewPassword);
+        etNewEmailConfirm = view.findViewById(R.id.etNewPasswordConfirm);
+        btnChangeEmail = view.findViewById(R.id.btnChangePassword);
         btnChangeEmail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +57,7 @@ public class EditEmailFragment extends Fragment {
                     Toast.makeText(getContext(), "Emails don't match", Toast.LENGTH_SHORT).show();
                 }
                 else {
-                    // update password
+                    // update email
                     ParseUser.getCurrentUser().setEmail(newEmail);
                     ParseUser.getCurrentUser().saveInBackground();
                     goEditInfo();

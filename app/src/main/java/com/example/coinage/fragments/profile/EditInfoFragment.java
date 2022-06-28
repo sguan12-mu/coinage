@@ -23,6 +23,7 @@ public class EditInfoFragment extends Fragment {
     private TextView tvNameEditDisplay;
     private TextView tvNameEdit;
     private ConstraintLayout clEmailEdit;
+    private ConstraintLayout clPasswordEdit;
 
     public EditInfoFragment() {
         // Required empty public constructor
@@ -58,12 +59,28 @@ public class EditInfoFragment extends Fragment {
             }
         });
 
+        clPasswordEdit = view.findViewById(R.id.clPasswordEdit);
+        clPasswordEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "change password");
+                goEditPassword();
+            }
+        });
+
     }
 
     private void goEditEmail() {
         FragmentTransaction fragmentTransaction = getActivity()
                 .getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, new EditEmailFragment());
+        fragmentTransaction.commit();
+    }
+
+    private void goEditPassword() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new EditPasswordFragment());
         fragmentTransaction.commit();
     }
 }
