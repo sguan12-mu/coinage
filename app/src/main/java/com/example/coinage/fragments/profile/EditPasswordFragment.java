@@ -45,9 +45,7 @@ public class EditPasswordFragment extends Fragment {
         etNewPassword = view.findViewById(R.id.etNewPassword);
         etNewPasswordConfirm = view.findViewById(R.id.etNewPasswordConfirm);
         btnChangePassword = view.findViewById(R.id.btnChangeName);
-        btnChangePassword.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnChangePassword.setOnClickListener(onClickListener -> {
                 String currentPassword = etCurrentPassword.getText().toString();
                 String newPassword = etNewPassword.getText().toString();
                 String newPasswordConfirm = etNewPasswordConfirm.getText().toString();
@@ -69,8 +67,11 @@ public class EditPasswordFragment extends Fragment {
                     ParseUser.getCurrentUser().saveInBackground();
                     goEditInfo();
                 }
-            }
-        });
+            });
+    }
+
+    public interface onClickListener{
+        public default void onClick(View v) {}
     }
 
     private void goEditInfo() {

@@ -45,32 +45,27 @@ public class EditInfoFragment extends Fragment {
         tvNameEditDisplay.setText(ParseUser.getCurrentUser().getUsername());
 
         tvNameEdit = view.findViewById(R.id.tvNameEdit);
-        tvNameEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        tvNameEdit.setOnClickListener(onClickListener -> {
                 Log.i(TAG, "go to edit name fragment to change account username");
                 goEditName();
-            }
-        });
+            });
 
         clEmailEdit = view.findViewById(R.id.clEmailEdit);
-        clEmailEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        clEmailEdit.setOnClickListener(onClickListener -> {
                 Log.i(TAG, "go to edit email fragment to change account email");
                 goEditEmail();
-            }
-        });
+            });
 
         clPasswordEdit = view.findViewById(R.id.clPasswordEdit);
-        clPasswordEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, "go to edit password fragment to change account password");
-                goEditPassword();
-            }
+        clPasswordEdit.setOnClickListener(onClickListener -> {
+            Log.i(TAG, "go to edit password fragment to change account password");
+            goEditPassword();
         });
 
+    }
+
+    public interface onClickListener{
+        public default void onClick(View v) {}
     }
 
     @Override

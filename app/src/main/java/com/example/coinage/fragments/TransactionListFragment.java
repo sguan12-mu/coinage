@@ -60,12 +60,11 @@ public class TransactionListFragment extends Fragment {
 
         // (placeholder button, will replace with some representation of overall spending limit)
         button2 = view.findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                goSpendingLimitOverview();
-            }
-        });
+        button2.setOnClickListener(onClickListener -> goSpendingLimitOverview());
+    }
+
+    public interface onClickListener{
+        public default void onClick(View v) {}
     }
 
     private void goSpendingLimitOverview() {

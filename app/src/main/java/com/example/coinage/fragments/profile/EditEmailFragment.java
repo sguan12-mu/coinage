@@ -44,9 +44,7 @@ public class EditEmailFragment extends Fragment {
         etNewEmail = view.findViewById(R.id.etNewPassword);
         etNewEmailConfirm = view.findViewById(R.id.etNewPasswordConfirm);
         btnChangeEmail = view.findViewById(R.id.btnChangeName);
-        btnChangeEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnChangeEmail.setOnClickListener(onClickListener -> {
                 String currentEmail = etCurrentEmail.getText().toString();
                 String newEmail = etNewEmail.getText().toString();
                 String newEmailConfirm = etNewEmailConfirm.getText().toString();
@@ -60,8 +58,11 @@ public class EditEmailFragment extends Fragment {
                     ParseUser.getCurrentUser().saveInBackground();
                     goEditInfo();
                 }
-            }
-        });
+            });
+    }
+
+    public interface onClickListener{
+        public default void onClick(View v) {}
     }
 
     private void goEditInfo() {
