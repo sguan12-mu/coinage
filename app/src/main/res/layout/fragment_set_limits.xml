@@ -7,12 +7,12 @@
     tools:context=".fragments.profile.ProfileFragment">
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="64dp"
-        android:text="overview"
+        android:layout_marginTop="139dp"
+        android:text="set limits"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

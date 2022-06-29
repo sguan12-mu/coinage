@@ -62,7 +62,7 @@ public class AddTransactionFragment extends Fragment {
         btnAdd = view.findViewById(R.id.btnAdd);
 
         // clicking the editText view for date will cause a date picker calendar to pop up
-        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+        DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int day) {
                 myCalendar.set(Calendar.YEAR, year);
@@ -71,33 +71,26 @@ public class AddTransactionFragment extends Fragment {
                 etDate.setText(dateFormat.format(myCalendar.getTime()));
             }
         };
-        etDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                new DatePickerDialog(getContext(),date,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
-            }
-        });
+        etDate.setOnClickListener((View v) ->
+                new DatePickerDialog(getContext(),datePicker,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
         // on submit, get user input and save transaction details to backend
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ParseUser currentUser = ParseUser.getCurrentUser();
-                BigDecimal amount = new BigDecimal(etAmount.getText().toString());
-                String category = etCategory.getText().toString();
-                String description = etDescription.getText().toString();
-                Date date;
-                try {
-                    date = dateFormat.parse(etDate.getText().toString());
-                    saveTransaction(currentUser, date, amount, category, description);
-                    // return to Home view after transaction is saved
-                    FragmentTransaction fragmentTransaction = getActivity()
-                            .getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
-                    fragmentTransaction.commit();
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+        btnAdd.setOnClickListener((View v) -> {
+            ParseUser currentUser = ParseUser.getCurrentUser();
+            BigDecimal amount = new BigDecimal(etAmount.getText().toString());
+            String category = etCategory.getText().toString();
+            String description = etDescription.getText().toString();
+            Date date;
+            try {
+                date = dateFormat.parse(etDate.getText().toString());
+                saveTransaction(currentUser, date, amount, category, description);
+                // return to Home view after transaction is saved
+                FragmentTransaction fragmentTransaction = getActivity()
+                        .getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
+                fragmentTransaction.commit();
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
         });
     }

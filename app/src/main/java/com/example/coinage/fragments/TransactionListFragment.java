@@ -60,15 +60,14 @@ public class TransactionListFragment extends Fragment {
 
         // (placeholder button, will replace with some representation of overall spending limit)
         button2 = view.findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitOverviewFragment());
-                fragmentTransaction.commit();
-            }
-        });
+        button2.setOnClickListener((View v) -> goSpendingLimitOverview());
+    }
+
+    private void goSpendingLimitOverview() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitOverviewFragment());
+        fragmentTransaction.commit();
     }
 
     private void queryTransactions() {
