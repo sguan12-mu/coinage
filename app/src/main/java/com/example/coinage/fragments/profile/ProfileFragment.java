@@ -47,17 +47,13 @@ public class ProfileFragment extends Fragment {
         tvName.setText(ParseUser.getCurrentUser().getUsername());
 
         btnLogout = view.findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener(onClickListener -> logoutUser());
+        btnLogout.setOnClickListener((View v) -> logoutUser());
 
         btnEditInfo = view.findViewById(R.id.btnEditInfo);
-        btnEditInfo.setOnClickListener(onClickListener -> goEditInfo());
+        btnEditInfo.setOnClickListener((View v) -> goEditInfo());
 
         btnSetLimits = view.findViewById(R.id.btnSetLimits);
-        btnSetLimits.setOnClickListener(onClickListener -> goSetLimits());
-    }
-
-    public interface onClickListener{
-        public default void onClick(View v) {}
+        btnSetLimits.setOnClickListener((View v) -> goSetLimits());
     }
 
     private void goLoginActivity() {

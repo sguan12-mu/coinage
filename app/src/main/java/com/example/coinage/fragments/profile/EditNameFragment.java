@@ -41,17 +41,13 @@ public class EditNameFragment extends Fragment {
         etCurrentName = view.findViewById(R.id.etCurrentName);
         etCurrentName.setText(ParseUser.getCurrentUser().getUsername());
         btnChangeName = view.findViewById(R.id.btnChangeName);
-        btnChangeName.setOnClickListener(onClickListener -> {
+        btnChangeName.setOnClickListener((View v) -> {
                 String name = etCurrentName.getText().toString();
                 // update name
                 ParseUser.getCurrentUser().setUsername(name);
                 ParseUser.getCurrentUser().saveInBackground();
                 goEditInfo();
             });
-    }
-
-    public interface onClickListener{
-        public default void onClick(View v) {}
     }
 
     private void goEditInfo() {

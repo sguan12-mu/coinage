@@ -71,11 +71,11 @@ public class AddTransactionFragment extends Fragment {
                 etDate.setText(dateFormat.format(myCalendar.getTime()));
             }
         };
-        etDate.setOnClickListener(onClickListener ->
+        etDate.setOnClickListener((View v) ->
                 new DatePickerDialog(getContext(),datePicker,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
         // on submit, get user input and save transaction details to backend
-        btnAdd.setOnClickListener(onClickListener -> {
+        btnAdd.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
             BigDecimal amount = new BigDecimal(etAmount.getText().toString());
             String category = etCategory.getText().toString();
@@ -93,10 +93,6 @@ public class AddTransactionFragment extends Fragment {
                 e.printStackTrace();
             }
         });
-    }
-
-    public interface onClickListener{
-        public default void onClick(View v) {}
     }
 
     private void saveTransaction(ParseUser currentUser, Date date, BigDecimal amount, String category, String description) {

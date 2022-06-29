@@ -37,18 +37,14 @@ public class LoginActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etPassword);
 
         btnLogin = findViewById(R.id.btnLogin);
-        btnLogin.setOnClickListener(onClickListener -> {
+        btnLogin.setOnClickListener((View v) -> {
                 String email = etEmail.getText().toString();
                 String password = etPassword.getText().toString();
                 loginUser(email, password);
             });
 
         btnRegister = findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener(onClickListener -> goRegisterActivity());
-    }
-
-    public interface onClickListener{
-        public default void onClick(View v) {}
+        btnRegister.setOnClickListener((View v) -> goRegisterActivity());
     }
 
     private void goMainActivity() {

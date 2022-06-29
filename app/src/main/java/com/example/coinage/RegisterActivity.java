@@ -35,7 +35,7 @@ public class RegisterActivity extends AppCompatActivity {
         etPasswordConfirm = findViewById(R.id.etPasswordConfirm);
         btnFinishRegister = findViewById(R.id.btnFinishRegister);
 
-        btnFinishRegister.setOnClickListener(onClickListener -> {
+        btnFinishRegister.setOnClickListener((View v) -> {
                 String name = etName.getText().toString();
                 String email = etEmailReg.getText().toString();
                 String password = etPasswordReg.getText().toString();
@@ -46,10 +46,6 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "passwords don't match", Toast.LENGTH_SHORT).show();
                 }
             });
-    }
-
-    public interface onClickListener{
-        public default void onClick(View v) {}
     }
 
     private void goMainActivity() {
