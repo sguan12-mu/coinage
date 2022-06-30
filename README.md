@@ -104,5 +104,5 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
 
 ### Networking
 
-More details in the PRD:
+More details in the TDD:
 https://docs.google.com/document/d/1uZGRYRlgAqDUR-Wb5c5Kkn8Asb4KCsr2w_WISfdTmJw 
