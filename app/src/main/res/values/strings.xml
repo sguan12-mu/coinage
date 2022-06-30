@@ -6,6 +6,9 @@
     <string name="back4app_app_id">DZcZ5t4E5OwIQLRyPNYvprBQyD1G0Oy5nQlqrtpz</string>
     <string name="back4app_client_key">rjp5DDCIPgdeIkkh5cbW5WlTD2SxObooqcDh5FZQ</string>
 
+    <!--spinner prompt-->
+    <string name="prompt">categories</string>
+
     <!-- Categories array for spinner options -->
     <array name="categories">
         <item>Food</item>
