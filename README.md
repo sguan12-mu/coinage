@@ -87,14 +87,20 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
    * String email
    * String password
    * Transaction List transactions
-   * Dictionary spendingLimit
-   * Dictionary amountSpent
+   * Budget spendingLimit
+   * Budget amountSpent
 
 * Transaction
    * String date
    * Float amount
    * String category
    * String description
+   * User user
+
+* Budget
+  * Float amount
+  * String category
+  * User user
 
 ### Networking
 
