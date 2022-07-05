@@ -65,7 +65,7 @@ public class SpendingLimitOverviewFragment extends Fragment {
         BarChart chart2 = new BarChart(getContext());
         chart2.setMinimumHeight(500);
 
-        calculateSpending(ParseUser.getCurrentUser());
+        calculateSpending();
 
         // chart 1
         List<BarEntry> entries = new ArrayList<BarEntry>();
@@ -93,9 +93,9 @@ public class SpendingLimitOverviewFragment extends Fragment {
 
     }
 
-    private void calculateSpending(ParseUser currentUser) {
+    private void calculateSpending() {
         ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
-        query.include(Transaction.KEY_USER);
+        query.include(Transaction.KEY_CATEGORY);
         query.findInBackground(new FindCallback<Transaction>() {
             @Override
             public void done(List<Transaction> transactions, ParseException e) {

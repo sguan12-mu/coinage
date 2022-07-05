@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.coinage.fragments.AddTransactionFragment;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
                 }
                 fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+                Log.i(TAG, "bottom navigation bar created");
                 return true;
             }
         });

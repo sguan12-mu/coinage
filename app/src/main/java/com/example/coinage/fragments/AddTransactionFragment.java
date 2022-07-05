@@ -18,7 +18,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.coinage.R;
+import com.example.coinage.models.Spending;
 import com.example.coinage.models.Transaction;
+import com.parse.FindCallback;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -26,6 +29,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 // track a new transaction by entering information (date, amount, category, description)
@@ -33,8 +37,9 @@ public class AddTransactionFragment extends Fragment {
     public static final String TAG = "AddTransactionFragment";
 
     public final Calendar myCalendar = Calendar.getInstance();
-    public static final String myFormat="MM/dd/yy";
+    public static final String myFormat = "MM/dd/yy";
     public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+    public static final String overallCategory = "Overall";
     private EditText etDate;
     private EditText etAmount;
     private EditText etCategory;
@@ -111,5 +116,51 @@ public class AddTransactionFragment extends Fragment {
                 Log.i(TAG, "purchase added to database");
             }
         });
+
+        // update spending categories
+        saveSpending(currentUser, category, amount);
+    }
+
+    private void saveSpending(ParseUser currentUser, String category, BigDecimal amount) {
+        ParseQuery<Spending> query = ParseQuery.getQuery(Spending.class);
+        query.whereEqualTo(Spending.KEY_CATEGORY, category);
+        query.findInBackground(new FindCallback<Spending>() {
+            @Override
+            public void done(List<Spending> spendings, com.parse.ParseException e) {
+                if (e!=null) {
+                    Log.e(TAG, "issue with getting spending amounts", e);
+                    return;
+                }
+                if (spendings.isEmpty()) {
+                    // make new spending for that category and save
+                    Spending newSpending = new Spending();
+                    newSpending.setUser(currentUser);
+                    newSpending.setAmount(amount);
+                    newSpending.setCategory(category);
+                    newSpending.saveInBackground(new SaveCallback() {
+                        @Override
+                        public void done(com.parse.ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "error while saving new spending amount", e);
+                            }
+                            Log.i(TAG, "new spending added to database");
+                        }
+                    });
+                } else {
+                    // add new transaction amount to existing spending category
+                    for (Spending spending : spendings) {
+                        Number currentAmount = spending.getAmount();
+                        BigDecimal newAmount = new BigDecimal(currentAmount.floatValue()).add(amount);
+                        Log.i(TAG, category + " is now "+newAmount.toString());
+                        spending.setAmount(newAmount);
+                        spending.saveInBackground();
+                    }
+                }
+            }
+        });
+        if (!category.equals(overallCategory)) {
+            // also track purchase as part of the overall category
+            saveSpending(currentUser, overallCategory, amount);
+        }
     }
 }
