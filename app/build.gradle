@@ -38,4 +38,7 @@ dependencies {
 
     // Parse
     implementation "com.github.parse-community.Parse-SDK-Android:parse:3.0.1"
+
+    // Android Charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

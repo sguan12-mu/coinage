@@ -11,6 +11,7 @@
 
     <!-- Categories array for spinner options -->
     <array name="categories">
+        <item>Overall</item>
         <item>Food</item>
         <item>Entertainment</item>
         <item>Clothing</item>

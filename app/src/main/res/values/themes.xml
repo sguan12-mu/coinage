@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.Coinage" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#f5ce33</item>
-        <item name="colorPrimaryVariant">#f5ce33</item>
+        <item name="colorPrimary">@color/yellow</item>
+        <item name="colorPrimaryVariant">@color/yellow</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#f5a133</item>
