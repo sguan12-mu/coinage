@@ -90,9 +90,8 @@ public class SpendingLimitOverviewFragment extends Fragment {
                                 spendingAmount = BigDecimal.valueOf(0);
                             } else {
                                 // spendings exist in this category
-                                for (Spending spending : spendings) {
-                                    spendingAmount = BigDecimal.valueOf(spending.getAmount().floatValue());
-                                }
+                                Spending spending = spendings.get(0); // there should only be one per category
+                                spendingAmount = BigDecimal.valueOf(spending.getAmount().floatValue());
                             }
                             generateChart(view, budgetAmount, spendingAmount);
                         }

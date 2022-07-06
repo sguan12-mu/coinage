@@ -1,6 +1,7 @@
 package com.example.coinage.fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
 
@@ -16,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.coinage.R;
+import com.example.coinage.models.Budget;
 import com.example.coinage.models.Spending;
 import com.example.coinage.models.Transaction;
 import com.parse.FindCallback;
@@ -45,6 +48,7 @@ public class AddTransactionFragment extends Fragment {
     private EditText etCategory;
     private EditText etDescription;
     private Button btnAdd;
+    private Context context;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -59,6 +63,8 @@ public class AddTransactionFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        context = getContext();
 
         etDate = view.findViewById(R.id.etDate);
         etAmount = view.findViewById(R.id.etAmount);
@@ -122,9 +128,9 @@ public class AddTransactionFragment extends Fragment {
     }
 
     private void saveSpending(ParseUser currentUser, String category, BigDecimal amount) {
-        ParseQuery<Spending> query = ParseQuery.getQuery(Spending.class);
-        query.whereEqualTo(Spending.KEY_CATEGORY, category);
-        query.findInBackground(new FindCallback<Spending>() {
+        ParseQuery<Spending> spendingQuery = ParseQuery.getQuery(Spending.class);
+        spendingQuery.whereEqualTo(Spending.KEY_CATEGORY, category);
+        spendingQuery.findInBackground(new FindCallback<Spending>() {
             @Override
             public void done(List<Spending> spendings, com.parse.ParseException e) {
                 if (e != null) {
@@ -148,12 +154,33 @@ public class AddTransactionFragment extends Fragment {
                     });
                 } else {
                     // add new transaction amount to existing spending category
-                    for (Spending spending : spendings) {
-                        Number currentAmount = spending.getAmount();
-                        BigDecimal newAmount = new BigDecimal(currentAmount.floatValue()).add(amount);
-                        spending.setAmount(newAmount);
-                        spending.saveInBackground();
-                    }
+                    Spending spending = spendings.get(0); // there should only be one per category
+                    Number currentSpendingAmount = spending.getAmount();
+                    BigDecimal newSpendingAmount = new BigDecimal(currentSpendingAmount.floatValue()).add(amount);
+                    spending.setAmount(newSpendingAmount);
+                    spending.saveInBackground();
+
+                    // check to see if spendings exceed budget (the set limit)
+                    ParseQuery<Budget> budgetQuery = ParseQuery.getQuery(Budget.class);
+                    budgetQuery.whereEqualTo(Budget.KEY_CATEGORY, category);
+                    budgetQuery.findInBackground(new FindCallback<Budget>() {
+                        @Override
+                        public void done(List<Budget> budgets, com.parse.ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "issue with getting budget", e);
+                                return;
+                            }
+                            if (!budgets.isEmpty()) {
+                                // there exists a budget for this category
+                                Budget budget = budgets.get(0); // there should only be one per category
+                                Number budgetAmount = budget.getAmount().floatValue();
+                                if (newSpendingAmount.compareTo(new BigDecimal(budgetAmount.floatValue())) > 0) {
+                                    Toast.makeText(context, "Spending limit exceeded!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }
+                    });
+
                 }
             }
         });
