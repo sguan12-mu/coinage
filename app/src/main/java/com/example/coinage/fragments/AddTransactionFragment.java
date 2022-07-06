@@ -151,7 +151,6 @@ public class AddTransactionFragment extends Fragment {
                     for (Spending spending : spendings) {
                         Number currentAmount = spending.getAmount();
                         BigDecimal newAmount = new BigDecimal(currentAmount.floatValue()).add(amount);
-                        Log.i(TAG, category + " is now "+newAmount.toString());
                         spending.setAmount(newAmount);
                         spending.saveInBackground();
                     }

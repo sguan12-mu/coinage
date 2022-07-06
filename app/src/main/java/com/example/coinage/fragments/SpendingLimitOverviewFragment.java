@@ -44,13 +44,6 @@ import java.util.List;
 public class SpendingLimitOverviewFragment extends Fragment {
     public static final String TAG = "SpendingLimitOverviewFragment";
 
-    // private Number Overall;
-    // private Number Food;
-    // private Number Entertainment;
-    // private Number Clothing;
-    // private Number Travel;
-    // private Number Housing;
-
     public SpendingLimitOverviewFragment() {
         // Required empty public constructor
     }
@@ -65,38 +58,7 @@ public class SpendingLimitOverviewFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        BarChart chart2 = new BarChart(getContext());
-        chart2.setMinimumHeight(500);
-
-        calculateSpending();
-
-        // chart 1
-        List<BarEntry> entries = new ArrayList<BarEntry>();
-        entries.add(new BarEntry(1, 2));
-        entries.add(new BarEntry(2, 3));
-        BarDataSet dataSet = new BarDataSet(entries, "Label"); // add entries to dataset
-        dataSet.setColor(getResources().getColor(R.color.yellow));
-        BarData barData = new BarData(dataSet);
-        BarChart chart = view.findViewById(R.id.chart);
-        chart.setData(barData);
-        chart.invalidate(); // refresh
-
-        chart.getDescription().setEnabled(false);
-        chart.getLegend().setEnabled(false);
-
-
-        // chart 2, programmatically add chart
-        // LinearLayout ll = (LinearLayout) view.findViewById(R.id.chartContainer);
-        // ll.addView(chart2); // add the programmatically created chart
-        // chart2.setData(barData);
-        // chart2.setPadding(0,20,0,0);
-        // chart2.getDescription().setEnabled(false);
-        // chart2.getLegend().setEnabled(false);
-        // chart2.invalidate();
-
-    }
-
-    private void calculateSpending() {
+        // generate a spendings vs budget chart for each category
         ParseQuery<Budget> query = ParseQuery.getQuery(Budget.class);
         query.include(Budget.KEY_CATEGORY);
         query.findInBackground(new FindCallback<Budget>() {
@@ -108,13 +70,15 @@ public class SpendingLimitOverviewFragment extends Fragment {
                     return;
                 }
 
+                // find corresponding spending amount for each budget category
                 for (Budget budget : budgets) {
                     String category = budget.getCategory();
-                    Log.i(TAG, "budget for " + category + " is " + budget.getAmount().toString());
-                    // find corresponding spending for each budget category
+                    BigDecimal budgetAmount = BigDecimal.valueOf(budget.getAmount().floatValue());
+
                     ParseQuery<Spending> query = ParseQuery.getQuery(Spending.class);
                     query.whereEqualTo(Spending.KEY_CATEGORY, category);
                     query.findInBackground(new FindCallback<Spending>() {
+                        BigDecimal spendingAmount;
                         @Override
                         public void done(List<Spending> spendings, ParseException e) {
                             if (e != null) {
@@ -123,17 +87,39 @@ public class SpendingLimitOverviewFragment extends Fragment {
                             }
                             if (spendings.isEmpty()) {
                                 // spendings in this category is 0
-                                Log.i(TAG, "spending in " + category + " is 0");
+                                spendingAmount = BigDecimal.valueOf(0);
                             } else {
-                                // add new transaction amount to existing spending category
+                                // spendings exist in this category
                                 for (Spending spending : spendings) {
-                                    Log.i(TAG, "spending in " + category + " is " + spending.getAmount().toString());
+                                    spendingAmount = BigDecimal.valueOf(spending.getAmount().floatValue());
                                 }
                             }
+                            generateChart(view, budgetAmount, spendingAmount);
                         }
                     });
                 }
             }
         });
+    }
+
+    private void generateChart (View view, BigDecimal budgetAmount, BigDecimal spendingAmount) {
+        // generate a chart for each pairing
+        List<BarEntry> entries = new ArrayList<BarEntry>();
+        entries.add(new BarEntry(1, spendingAmount.floatValue()));
+        entries.add(new BarEntry(2, budgetAmount.floatValue()));
+        BarDataSet data = new BarDataSet(entries, "Label");
+        data.setColor(getResources().getColor(R.color.yellow));
+        BarData barData = new BarData(data);
+
+        LinearLayout ll = (LinearLayout) view.findViewById(R.id.chartContainer);
+        BarChart chart = new BarChart(getContext());
+        ll.addView(chart);
+
+        chart.setData(barData);
+        chart.setPadding(0,20,0,0);
+        chart.setMinimumHeight(500);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.invalidate();
     }
 }
