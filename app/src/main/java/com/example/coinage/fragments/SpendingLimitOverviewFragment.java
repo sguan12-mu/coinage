@@ -19,6 +19,8 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import com.example.coinage.R;
+import com.example.coinage.models.Budget;
+import com.example.coinage.models.Spending;
 import com.example.coinage.models.Transaction;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -32,6 +34,7 @@ import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -94,19 +97,41 @@ public class SpendingLimitOverviewFragment extends Fragment {
     }
 
     private void calculateSpending() {
-        ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
-        query.include(Transaction.KEY_CATEGORY);
-        query.findInBackground(new FindCallback<Transaction>() {
+        ParseQuery<Budget> query = ParseQuery.getQuery(Budget.class);
+        query.include(Budget.KEY_CATEGORY);
+        query.findInBackground(new FindCallback<Budget>() {
             @Override
-            public void done(List<Transaction> transactions, ParseException e) {
+            public void done(List<Budget> budgets, ParseException e) {
                 // check for errors
                 if (e != null) {
                     Log.e(TAG, "issue getting transactions from backend", e);
                     return;
                 }
 
-                for (Transaction transaction : transactions) {
-                    // calculate spending so far
+                for (Budget budget : budgets) {
+                    String category = budget.getCategory();
+                    Log.i(TAG, "budget for " + category + " is " + budget.getAmount().toString());
+                    // find corresponding spending for each budget category
+                    ParseQuery<Spending> query = ParseQuery.getQuery(Spending.class);
+                    query.whereEqualTo(Spending.KEY_CATEGORY, category);
+                    query.findInBackground(new FindCallback<Spending>() {
+                        @Override
+                        public void done(List<Spending> spendings, ParseException e) {
+                            if (e != null) {
+                                Log.e(TAG, "issue with getting spending amounts", e);
+                                return;
+                            }
+                            if (spendings.isEmpty()) {
+                                // spendings in this category is 0
+                                Log.i(TAG, "spending in " + category + " is 0");
+                            } else {
+                                // add new transaction amount to existing spending category
+                                for (Spending spending : spendings) {
+                                    Log.i(TAG, "spending in " + category + " is " + spending.getAmount().toString());
+                                }
+                            }
+                        }
+                    });
                 }
             }
         });

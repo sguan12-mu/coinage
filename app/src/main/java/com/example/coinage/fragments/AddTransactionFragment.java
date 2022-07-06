@@ -127,7 +127,7 @@ public class AddTransactionFragment extends Fragment {
         query.findInBackground(new FindCallback<Spending>() {
             @Override
             public void done(List<Spending> spendings, com.parse.ParseException e) {
-                if (e!=null) {
+                if (e != null) {
                     Log.e(TAG, "issue with getting spending amounts", e);
                     return;
                 }
