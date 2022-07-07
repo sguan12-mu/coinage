@@ -4,8 +4,8 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-@ParseClassName("Budget")
-public class Budget extends ParseObject {
+@ParseClassName("SpendingLimit")
+public class SpendingLimit extends ParseObject {
     public static final String KEY_USER = "user";
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_CATEGORY = "category";

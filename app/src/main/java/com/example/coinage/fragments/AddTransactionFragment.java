@@ -19,10 +19,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coinage.R;
-import com.example.coinage.models.Budget;
-import com.example.coinage.models.Spending;
+import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
-import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -32,7 +30,6 @@ import com.parse.SaveCallback;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 // track a new transaction by entering information (date, amount, category, description)
@@ -122,68 +119,5 @@ public class AddTransactionFragment extends Fragment {
                 Log.i(TAG, "purchase added to database");
             }
         });
-
-        // update spending categories
-        saveSpending(currentUser, category, amount);
-    }
-
-    private void saveSpending(ParseUser currentUser, String category, BigDecimal amount) {
-        ParseQuery<Spending> spendingQuery = ParseQuery.getQuery(Spending.class);
-        spendingQuery.whereEqualTo(Spending.KEY_CATEGORY, category);
-        spendingQuery.getFirstInBackground(new GetCallback<Spending>() {
-            @Override
-            public void done(Spending spending, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "issue with getting spending amounts", e);
-                    return;
-                }
-                if (spending == null) {
-                    // make new spending for that category and save
-                    Spending newSpending = new Spending();
-                    newSpending.setUser(currentUser);
-                    newSpending.setAmount(amount);
-                    newSpending.setCategory(category);
-                    newSpending.saveInBackground(new SaveCallback() {
-                        @Override
-                        public void done(ParseException e) {
-                            if (e != null) {
-                                Log.e(TAG, "error while saving new spending amount", e);
-                            }
-                            Log.i(TAG, "new spending added to database");
-                        }
-                    });
-                } else {
-                    // add new transaction amount to existing spending category
-                    Number currentSpendingAmount = spending.getAmount();
-                    BigDecimal newSpendingAmount = new BigDecimal(currentSpendingAmount.floatValue()).add(amount);
-                    spending.setAmount(newSpendingAmount);
-                    spending.saveInBackground();
-
-                    // check to see if spendings exceed budget (the set limit)
-                    ParseQuery<Budget> budgetQuery = ParseQuery.getQuery(Budget.class);
-                    budgetQuery.whereEqualTo(Budget.KEY_CATEGORY, category);
-                    budgetQuery.getFirstInBackground(new GetCallback<Budget>() {
-                        @Override
-                        public void done(Budget budget, ParseException e) {
-                            if (e != null) {
-                                Log.e(TAG, "issue with getting budget", e);
-                                return;
-                            }
-                            if (budget != null) {
-                                // there exists a budget for this category
-                                Number budgetAmount = budget.getAmount().floatValue();
-                                if (newSpendingAmount.compareTo(new BigDecimal(budgetAmount.floatValue())) > 0) {
-                                    Toast.makeText(context, "Spending limit exceeded!", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }
-                    });
-                }
-            }
-        });
-        if (!category.equals(overallCategory)) {
-            // also track purchase as part of the overall category
-            saveSpending(currentUser, overallCategory, amount);
-        }
     }
 }

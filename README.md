@@ -8,7 +8,7 @@
 
 ## Overview
 ### Description
-Coinage helps people who are just becoming financially independent consistently track their spending habits and set budget limits while encouraging them to be more mindful about what they buy.
+Coinage helps people who are just becoming financially independent consistently track their spending habits and set spendingLimit limits while encouraging them to be more mindful about what they buy.
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
@@ -72,7 +72,7 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
 * Timeline -> Spending limit overview (profile)
 * Timeline -> Transaction details
 * Add transaction -> Scan receipt -> Timeline
-* Settings -> Set budget (or any other settings screen)
+* Settings -> Set spendingLimit (or any other settings screen)
 
 ## Wireframe
 
@@ -87,8 +87,6 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
    * String email
    * String password
    * Transaction List transactions
-   * Budget spendingLimit
-   * Budget amountSpent
 
 * Transaction
    * String date
@@ -97,7 +95,12 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
    * String description
    * User user
 
-* Budget
+* SpendingLimitForCategory
+  * Float amount
+  * String category
+  * User user
+
+* SpendingTotalForCategory
   * Float amount
   * String category
   * User user

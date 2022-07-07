@@ -42,7 +42,7 @@ public class TransactionListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_transaction_list, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class TransactionListFragment extends Fragment {
     private void goSpendingLimitOverview() {
         FragmentTransaction fragmentTransaction = getActivity()
                 .getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitOverviewFragment());
+        fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitChartsFragment());
         fragmentTransaction.commit();
     }
 

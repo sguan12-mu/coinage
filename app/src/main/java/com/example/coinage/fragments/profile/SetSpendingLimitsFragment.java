@@ -16,27 +16,23 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.example.coinage.R;
-import com.example.coinage.fragments.TransactionListFragment;
-import com.example.coinage.models.Budget;
-import com.example.coinage.models.Transaction;
+import com.example.coinage.models.SpendingLimit;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.ParseException;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
-public class SetLimitsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
+public class SetSpendingLimitsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     public static final String TAG = "SetLimitsFragment";
 
     private Spinner sCategories;
     private EditText etSetAmount;
     private Button btnSetLimit;
 
-    public SetLimitsFragment() {
+    public SetSpendingLimitsFragment() {
         // Required empty public constructor
     }
 
@@ -44,7 +40,7 @@ public class SetLimitsFragment extends Fragment implements AdapterView.OnItemSel
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_set_limits, container, false);
+        return inflater.inflate(R.layout.fragment_set_spending_limits, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -79,11 +75,11 @@ public class SetLimitsFragment extends Fragment implements AdapterView.OnItemSel
     }
 
     private void saveLimit(ParseUser currentUser, BigDecimal amount, String category) {
-        Budget budget = new Budget();
-        budget.setUser(currentUser);
-        budget.setAmount(amount);
-        budget.setCategory(category);
-        budget.saveInBackground(new SaveCallback() {
+        SpendingLimit spendingLimit = new SpendingLimit();
+        spendingLimit.setUser(currentUser);
+        spendingLimit.setAmount(amount);
+        spendingLimit.setCategory(category);
+        spendingLimit.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 if (e != null) {
