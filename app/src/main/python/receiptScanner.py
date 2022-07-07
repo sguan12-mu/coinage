@@ -15,9 +15,11 @@ def apiResults(path):
     date = response[3].value
     total = response[8].value
 
+    apiResultArray.clear()
     apiResultArray.append(merchant)
     apiResultArray.append(date)
     apiResultArray.append(total)
+    print(response)
 
 def getMerchant():
     return apiResultArray[0]
