@@ -23,6 +23,7 @@ import com.example.coinage.models.Budget;
 import com.example.coinage.models.Spending;
 import com.example.coinage.models.Transaction;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -129,14 +130,14 @@ public class AddTransactionFragment extends Fragment {
     private void saveSpending(ParseUser currentUser, String category, BigDecimal amount) {
         ParseQuery<Spending> spendingQuery = ParseQuery.getQuery(Spending.class);
         spendingQuery.whereEqualTo(Spending.KEY_CATEGORY, category);
-        spendingQuery.findInBackground(new FindCallback<Spending>() {
+        spendingQuery.getFirstInBackground(new GetCallback<Spending>() {
             @Override
-            public void done(List<Spending> spendings, ParseException e) {
+            public void done(Spending spending, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "issue with getting spending amounts", e);
                     return;
                 }
-                if (spendings.isEmpty()) {
+                if (spending == null) {
                     // make new spending for that category and save
                     Spending newSpending = new Spending();
                     newSpending.setUser(currentUser);
@@ -153,7 +154,6 @@ public class AddTransactionFragment extends Fragment {
                     });
                 } else {
                     // add new transaction amount to existing spending category
-                    Spending spending = spendings.get(0); // there should only be one per category
                     Number currentSpendingAmount = spending.getAmount();
                     BigDecimal newSpendingAmount = new BigDecimal(currentSpendingAmount.floatValue()).add(amount);
                     spending.setAmount(newSpendingAmount);
@@ -162,16 +162,15 @@ public class AddTransactionFragment extends Fragment {
                     // check to see if spendings exceed budget (the set limit)
                     ParseQuery<Budget> budgetQuery = ParseQuery.getQuery(Budget.class);
                     budgetQuery.whereEqualTo(Budget.KEY_CATEGORY, category);
-                    budgetQuery.findInBackground(new FindCallback<Budget>() {
+                    budgetQuery.getFirstInBackground(new GetCallback<Budget>() {
                         @Override
-                        public void done(List<Budget> budgets, ParseException e) {
+                        public void done(Budget budget, ParseException e) {
                             if (e != null) {
                                 Log.e(TAG, "issue with getting budget", e);
                                 return;
                             }
-                            if (!budgets.isEmpty()) {
+                            if (budget != null) {
                                 // there exists a budget for this category
-                                Budget budget = budgets.get(0); // there should only be one per category
                                 Number budgetAmount = budget.getAmount().floatValue();
                                 if (newSpendingAmount.compareTo(new BigDecimal(budgetAmount.floatValue())) > 0) {
                                     Toast.makeText(context, "Spending limit exceeded!", Toast.LENGTH_SHORT).show();
@@ -179,7 +178,6 @@ public class AddTransactionFragment extends Fragment {
                             }
                         }
                     });
-
                 }
             }
         });

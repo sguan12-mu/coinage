@@ -31,6 +31,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -77,23 +78,22 @@ public class SpendingLimitOverviewFragment extends Fragment {
 
                     ParseQuery<Spending> query = ParseQuery.getQuery(Spending.class);
                     query.whereEqualTo(Spending.KEY_CATEGORY, category);
-                    query.findInBackground(new FindCallback<Spending>() {
+                    query.getFirstInBackground(new GetCallback<Spending>() {
                         BigDecimal spendingAmount;
                         @Override
-                        public void done(List<Spending> spendings, ParseException e) {
-                            if (e != null) {
-                                Log.e(TAG, "issue with getting spending amounts", e);
-                                return;
-                            }
-                            if (spendings.isEmpty()) {
-                                // spendings in this category is 0
-                                spendingAmount = BigDecimal.valueOf(0);
-                            } else {
-                                // spendings exist in this category
-                                Spending spending = spendings.get(0); // there should only be one per category
-                                spendingAmount = BigDecimal.valueOf(spending.getAmount().floatValue());
-                            }
-                            generateChart(view, budgetAmount, spendingAmount);
+                        public void done(Spending spending, ParseException e) {
+                           if (e != null) {
+                               Log.e(TAG, "issue with getting spending amounts", e);
+                               return;
+                           }
+                           if (spending == null) {
+                               // spendings in this category is 0
+                               spendingAmount = BigDecimal.valueOf(0);
+                           } else {
+                               // spendings exist in this category
+                               spendingAmount = BigDecimal.valueOf(spending.getAmount().floatValue());
+                           }
+                           generateChart(view, budgetAmount, spendingAmount);
                         }
                     });
                 }
