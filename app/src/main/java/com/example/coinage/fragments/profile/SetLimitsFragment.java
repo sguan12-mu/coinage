@@ -24,6 +24,7 @@ import com.example.coinage.models.Budget;
 import com.example.coinage.models.Transaction;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
+import com.parse.ParseException;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -84,7 +85,7 @@ public class SetLimitsFragment extends Fragment implements AdapterView.OnItemSel
         budget.setCategory(category);
         budget.saveInBackground(new SaveCallback() {
             @Override
-            public void done(com.parse.ParseException e) {
+            public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "error while saving spending limit", e);
                 }

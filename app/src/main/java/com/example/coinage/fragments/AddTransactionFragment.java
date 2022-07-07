@@ -4,12 +4,6 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,17 +13,22 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.coinage.R;
 import com.example.coinage.models.Budget;
 import com.example.coinage.models.Spending;
 import com.example.coinage.models.Transaction;
 import com.parse.FindCallback;
+import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -100,7 +99,7 @@ public class AddTransactionFragment extends Fragment {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
                 fragmentTransaction.commit();
-            } catch (ParseException e) {
+            } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
         });
@@ -115,7 +114,7 @@ public class AddTransactionFragment extends Fragment {
         transaction.setDescription(description);
         transaction.saveInBackground(new SaveCallback() {
             @Override
-            public void done(com.parse.ParseException e) {
+            public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "error while adding purchase", e);
                 }
@@ -132,7 +131,7 @@ public class AddTransactionFragment extends Fragment {
         spendingQuery.whereEqualTo(Spending.KEY_CATEGORY, category);
         spendingQuery.findInBackground(new FindCallback<Spending>() {
             @Override
-            public void done(List<Spending> spendings, com.parse.ParseException e) {
+            public void done(List<Spending> spendings, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "issue with getting spending amounts", e);
                     return;
@@ -145,7 +144,7 @@ public class AddTransactionFragment extends Fragment {
                     newSpending.setCategory(category);
                     newSpending.saveInBackground(new SaveCallback() {
                         @Override
-                        public void done(com.parse.ParseException e) {
+                        public void done(ParseException e) {
                             if (e != null) {
                                 Log.e(TAG, "error while saving new spending amount", e);
                             }
@@ -165,7 +164,7 @@ public class AddTransactionFragment extends Fragment {
                     budgetQuery.whereEqualTo(Budget.KEY_CATEGORY, category);
                     budgetQuery.findInBackground(new FindCallback<Budget>() {
                         @Override
-                        public void done(List<Budget> budgets, com.parse.ParseException e) {
+                        public void done(List<Budget> budgets, ParseException e) {
                             if (e != null) {
                                 Log.e(TAG, "issue with getting budget", e);
                                 return;

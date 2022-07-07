@@ -3,7 +3,7 @@ package com.example.coinage;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.net.ParseException;
+import com.parse.ParseException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -68,7 +68,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         ParseUser.logInInBackground(email, password, new LogInCallback() {
             @Override
-            public void done(ParseUser user, com.parse.ParseException e) {
+            public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "issue with login", e);
                     Toast.makeText(LoginActivity.this, "issue with login", Toast.LENGTH_SHORT).show();
