@@ -124,14 +124,14 @@ public class AddTransactionFragment extends Fragment {
 
         // scan a receipt
         ivScan.setOnClickListener((View v) -> {
-//            scanReceipt();
+            scanReceipt();
 
             if (! Python.isStarted()) {
                 Python.start(new AndroidPlatform(context));
             }
             Python py = Python.getInstance();
-            PyObject pyobj = py.getModule("receiptScanner");
-            PyObject obj = pyobj.callAttr("main");
+            PyObject receiptScanner = py.getModule("receiptScanner");
+            PyObject obj = receiptScanner.callAttr("apiResults", photoFile.getAbsolutePath());
             tvPython.setText(obj.toString());
         });
     }
@@ -156,7 +156,6 @@ public class AddTransactionFragment extends Fragment {
 
     private void scanReceipt() {
         // launch camera
-        // create intent to take picture and return control to calling application
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // create a file reference to access to future access
         photoFile = getPhotoFileUri(photoFileName);
