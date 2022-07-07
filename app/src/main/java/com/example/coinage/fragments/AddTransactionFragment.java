@@ -63,7 +63,6 @@ public class AddTransactionFragment extends Fragment {
     private Button btnAdd;
     private ImageView ivScan;
     private Context context;
-    private TextView tvPython;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -87,7 +86,6 @@ public class AddTransactionFragment extends Fragment {
         etDescription = view.findViewById(R.id.etDescription);
         btnAdd = view.findViewById(R.id.btnAdd);
         ivScan = view.findViewById(R.id.ivScan);
-        tvPython = view.findViewById(R.id.tvPython);
 
         // clicking the editText view for date will cause a date picker calendar to pop up
         DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
@@ -131,8 +129,13 @@ public class AddTransactionFragment extends Fragment {
             }
             Python py = Python.getInstance();
             PyObject receiptScanner = py.getModule("receiptScanner");
-            PyObject obj = receiptScanner.callAttr("apiResults", photoFile.getAbsolutePath());
-            tvPython.setText(obj.toString());
+            receiptScanner.callAttr("apiResults", photoFile.getAbsolutePath());
+            PyObject merchant = receiptScanner.callAttr("getMerchant");
+            PyObject date = receiptScanner.callAttr("getDate");
+            PyObject total = receiptScanner.callAttr("getTotal");
+            etDate.setText(date.toString());
+            etAmount.setText(total.toString());
+            etDescription.setText(merchant.toString() + " purchase");
         });
     }
 
