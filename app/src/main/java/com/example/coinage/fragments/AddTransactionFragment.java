@@ -133,6 +133,10 @@ public class AddTransactionFragment extends Fragment {
             PyObject merchant = receiptScanner.callAttr("getMerchant");
             PyObject date = receiptScanner.callAttr("getDate");
             PyObject total = receiptScanner.callAttr("getTotal");
+            if (merchant.equals("") || date.equals("") || total.equals("")) {
+                Log.i(TAG, "receipt scanner confidence low");
+                Toast.makeText(getContext(),"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT);
+            }
             etDate.setText(date.toString());
             etAmount.setText(total.toString());
             etDescription.setText(merchant.toString() + " purchase");
