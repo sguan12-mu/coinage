@@ -23,13 +23,12 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 import com.example.coinage.R;
 import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
@@ -64,6 +63,7 @@ public class AddTransactionFragment extends Fragment {
     private Button btnAdd;
     private ImageView ivScan;
     private Context context;
+    private TextView tvPython;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -87,6 +87,7 @@ public class AddTransactionFragment extends Fragment {
         etDescription = view.findViewById(R.id.etDescription);
         btnAdd = view.findViewById(R.id.btnAdd);
         ivScan = view.findViewById(R.id.ivScan);
+        tvPython = view.findViewById(R.id.tvPython);
 
         // clicking the editText view for date will cause a date picker calendar to pop up
         DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
@@ -123,7 +124,15 @@ public class AddTransactionFragment extends Fragment {
 
         // scan a receipt
         ivScan.setOnClickListener((View v) -> {
-            scanReceipt();
+//            scanReceipt();
+
+            if (! Python.isStarted()) {
+                Python.start(new AndroidPlatform(context));
+            }
+            Python py = Python.getInstance();
+            PyObject pyobj = py.getModule("receiptScanner");
+            PyObject obj = pyobj.callAttr("main");
+            tvPython.setText(obj.toString());
         });
     }
 
