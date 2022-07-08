@@ -1,10 +1,12 @@
 package com.example.coinage.fragments;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,7 +24,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chaquo.python.PyObject;
@@ -63,6 +63,11 @@ public class AddTransactionFragment extends Fragment {
     private Button btnAdd;
     private ImageView ivScan;
     private Context context;
+
+    private PyObject merchant;
+    private PyObject date;
+    private PyObject total;
+    private Boolean lowConfidence;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -123,24 +128,40 @@ public class AddTransactionFragment extends Fragment {
         // scan a receipt
         ivScan.setOnClickListener((View v) -> {
             scanReceipt();
+            // async api call
+            ApiCall apiCall = new ApiCall();
+            apiCall.execute();
+        });
+    }
 
+    // async call to receipt scanner
+    private class ApiCall extends AsyncTask<Void, Void, Boolean> {
+        @Override
+        protected Boolean doInBackground(Void... voids) {
             if (! Python.isStarted()) {
                 Python.start(new AndroidPlatform(context));
             }
             Python py = Python.getInstance();
             PyObject receiptScanner = py.getModule("receiptScanner");
             receiptScanner.callAttr("apiResults", photoFile.getAbsolutePath());
-            PyObject merchant = receiptScanner.callAttr("getMerchant");
-            PyObject date = receiptScanner.callAttr("getDate");
-            PyObject total = receiptScanner.callAttr("getTotal");
-            if (merchant.equals("") || date.equals("") || total.equals("")) {
+            merchant = receiptScanner.callAttr("getMerchant");
+            date = receiptScanner.callAttr("getDate");
+            total = receiptScanner.callAttr("getTotal");
+            lowConfidence = merchant.equals("") || date.equals("") || total.equals("");
+            Log.i(TAG, merchant.toString());
+            return (lowConfidence);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean lowConfidence) {
+            if (lowConfidence) {
                 Log.i(TAG, "receipt scanner confidence low");
                 Toast.makeText(getContext(),"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT);
             }
             etDate.setText(date.toString());
             etAmount.setText(total.toString());
             etDescription.setText(merchant.toString() + " purchase");
-        });
+        }
     }
 
     private void saveTransaction(ParseUser currentUser, Date date, BigDecimal amount, String category, String description) {
