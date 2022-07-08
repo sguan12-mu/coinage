@@ -95,12 +95,7 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
    * String description
    * User user
 
-* SpendingLimitForCategory
-  * Float amount
-  * String category
-  * User user
-
-* SpendingTotalForCategory
+* SpendingLimit
   * Float amount
   * String category
   * User user
