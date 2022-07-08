@@ -1,14 +1,9 @@
 package com.example.coinage.fragments;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.icu.text.SimpleDateFormat;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,14 +11,23 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.coinage.R;
+import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -33,13 +37,15 @@ public class AddTransactionFragment extends Fragment {
     public static final String TAG = "AddTransactionFragment";
 
     public final Calendar myCalendar = Calendar.getInstance();
-    public static final String myFormat="MM/dd/yy";
+    public static final String myFormat = "MM/dd/yy";
     public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
+    public static final String overallCategory = "Overall";
     private EditText etDate;
     private EditText etAmount;
     private EditText etCategory;
     private EditText etDescription;
     private Button btnAdd;
+    private Context context;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -54,6 +60,8 @@ public class AddTransactionFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        context = getContext();
 
         etDate = view.findViewById(R.id.etDate);
         etAmount = view.findViewById(R.id.etAmount);
@@ -89,7 +97,7 @@ public class AddTransactionFragment extends Fragment {
                         .getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
                 fragmentTransaction.commit();
-            } catch (ParseException e) {
+            } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
         });
@@ -104,7 +112,7 @@ public class AddTransactionFragment extends Fragment {
         transaction.setDescription(description);
         transaction.saveInBackground(new SaveCallback() {
             @Override
-            public void done(com.parse.ParseException e) {
+            public void done(ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "error while adding purchase", e);
                 }

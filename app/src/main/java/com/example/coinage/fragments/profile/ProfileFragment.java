@@ -16,8 +16,6 @@ import android.widget.TextView;
 
 import com.example.coinage.LoginActivity;
 import com.example.coinage.R;
-import com.example.coinage.fragments.profile.EditInfoFragment;
-import com.example.coinage.fragments.profile.SetLimitsFragment;
 import com.parse.ParseUser;
 
 // profile information and settings page
@@ -79,7 +77,7 @@ public class ProfileFragment extends Fragment {
     private void goSetLimits() {
         FragmentTransaction fragmentTransaction = getActivity()
                 .getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.frameLayout, new SetLimitsFragment());
+        fragmentTransaction.replace(R.id.frameLayout, new SetSpendingLimitsFragment());
         fragmentTransaction.commit();
     }
 }
