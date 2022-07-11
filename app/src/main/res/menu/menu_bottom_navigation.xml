@@ -3,17 +3,17 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/action_home"
-        app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_sort_by_size"
-        android:title="Home" />
+        android:icon="@drawable/list"
+        android:title="Home"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_add"
-        app:showAsAction="always"
-        android:icon="@android:drawable/ic_menu_add"
-        android:title="Add" />
+        android:icon="@drawable/add"
+        android:title="Add"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"
-        android:icon="@android:drawable/ic_menu_my_calendar"
+        android:icon="@drawable/profile"
         android:title="Profile"
         app:showAsAction="always" />
 </menu>
