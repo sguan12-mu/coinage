@@ -13,10 +13,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -54,7 +57,7 @@ public class AddTransactionFragment extends Fragment {
 
     private EditText etDate;
     private EditText etAmount;
-    private EditText etCategory;
+    private Spinner sCategoriesAdd;
     private EditText etDescription;
     private Button btnAdd;
     private ImageView ivScan;
@@ -83,7 +86,7 @@ public class AddTransactionFragment extends Fragment {
 
         etDate = view.findViewById(R.id.etDate);
         etAmount = view.findViewById(R.id.etAmount);
-        etCategory = view.findViewById(R.id.etCategory);
+        sCategoriesAdd = view.findViewById(R.id.sCategoriesAdd);
         etDescription = view.findViewById(R.id.etDescription);
         btnAdd = view.findViewById(R.id.btnAdd);
         ivScan = view.findViewById(R.id.ivScan);
@@ -101,11 +104,26 @@ public class AddTransactionFragment extends Fragment {
         etDate.setOnClickListener((View v) ->
                 new DatePickerDialog(getContext(),datePicker,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show());
 
+        // category spinner
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.categoriesAdd,
+                R.layout.custom_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        sCategoriesAdd.setAdapter(adapter);
+        sCategoriesAdd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+
         // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
             BigDecimal amount = new BigDecimal(etAmount.getText().toString());
-            String category = etCategory.getText().toString();
+            String category = sCategoriesAdd.getSelectedItem().toString();
             String description = etDescription.getText().toString();
             Date date;
             try {

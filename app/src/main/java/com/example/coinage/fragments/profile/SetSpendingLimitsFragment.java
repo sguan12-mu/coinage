@@ -53,7 +53,7 @@ public class SetSpendingLimitsFragment extends Fragment implements AdapterView.O
         // category spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.categories,
-                android.R.layout.simple_spinner_item);
+                R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         sCategories.setAdapter(adapter);
         sCategories.setOnItemSelectedListener(this);

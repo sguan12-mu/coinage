@@ -9,9 +9,9 @@
 
     <Spinner
         android:id="@+id/sCategories"
-        android:layout_width="210dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="197dp"
+        android:layout_width="219dp"
+        android:layout_height="49dp"
+        android:layout_marginTop="196dp"
         android:spinnerMode="dropdown"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +21,7 @@
         android:id="@+id/etSetAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="10dp"
         android:ems="10"
         android:hint="amount"
         android:inputType="number"
