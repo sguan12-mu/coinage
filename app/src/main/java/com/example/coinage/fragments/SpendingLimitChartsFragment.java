@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.Space;
+import android.widget.TextView;
 
 import com.example.coinage.R;
 import com.example.coinage.models.SpendingLimit;
@@ -19,13 +21,17 @@ import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 // includes different charts and graphics for user's spending limits
@@ -77,7 +83,7 @@ public class SpendingLimitChartsFragment extends Fragment {
                                 // add all spendings in this category
                                 categoryCumulativeAmount = categoryCumulativeAmount.add(BigDecimal.valueOf(transaction.getAmount().floatValue()));
                             }
-                            generateChart(view, spendingLimitAmount, categoryCumulativeAmount);
+                            generateChart(view, spendingLimitAmount, categoryCumulativeAmount, category);
                         }
                     });
                 }
@@ -85,24 +91,35 @@ public class SpendingLimitChartsFragment extends Fragment {
         });
     }
 
-    private void generateChart (View view, BigDecimal spendingLimitAmount, BigDecimal categoryCumulativeAmount) {
+    private void generateChart (View view, BigDecimal spendingLimitAmount, BigDecimal categoryCumulativeAmount, String label) {
         // generate a chart for each pairing
         List<BarEntry> entries = new ArrayList<BarEntry>();
-        entries.add(new BarEntry(1, categoryCumulativeAmount.floatValue()));
-        entries.add(new BarEntry(2, spendingLimitAmount.floatValue()));
+        entries.add(new BarEntry(1, categoryCumulativeAmount.floatValue(), "Amount Spent"));
+        entries.add(new BarEntry(2, spendingLimitAmount.floatValue(), "Spending Limit"));
         BarDataSet data = new BarDataSet(entries, "Label");
         data.setColor(getResources().getColor(R.color.yellow));
         BarData barData = new BarData(data);
 
         LinearLayout ll = (LinearLayout) view.findViewById(R.id.chartContainer);
+
+        TextView chartLabel = new TextView(getContext());
+        chartLabel.setText("Category: " + label);
+        ll.addView(chartLabel);
+
         BarChart chart = new BarChart(getContext());
         ll.addView(chart);
 
+        barData.setValueTextSize(12);
         chart.setData(barData);
         chart.setPadding(0,20,0,0);
         chart.setMinimumHeight(500);
         chart.getDescription().setEnabled(false);
         chart.getLegend().setEnabled(false);
+        chart.getXAxis().setEnabled(false);
         chart.invalidate();
+
+        Space space = new Space(getContext());
+        space.setMinimumHeight(50);
+        ll.addView(space);
     }
 }
