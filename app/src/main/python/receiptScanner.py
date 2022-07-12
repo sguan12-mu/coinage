@@ -29,3 +29,10 @@ def getDate():
 
 def getTotal():
     return apiResultArray[2]
+
+def getConfidence():
+    if (getMerchant() == "" and getDate() == "" and getTotal() == ""):
+        return "low"
+    elif (getMerchant() == "" or getDate() == "" or getTotal() == ""):
+        return "medium"
+    return "high"

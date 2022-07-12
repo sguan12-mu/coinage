@@ -1,19 +1,12 @@
 package com.example.coinage.fragments;
 
 import android.app.DatePickerDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -26,15 +19,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.coinage.R;
-import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
@@ -67,7 +63,7 @@ public class AddTransactionFragment extends Fragment {
     private PyObject merchant;
     private PyObject date;
     private PyObject total;
-    private Boolean lowConfidence;
+    private PyObject confidence;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -135,29 +131,34 @@ public class AddTransactionFragment extends Fragment {
     }
 
     // async call to receipt scanner
-    private class ApiCall extends AsyncTask<Void, Void, Boolean> {
+    private class ApiCall extends AsyncTask<Void, Void, String> {
         @Override
-        protected Boolean doInBackground(Void... voids) {
+        protected String doInBackground(Void... voids) {
             if (! Python.isStarted()) {
                 Python.start(new AndroidPlatform(context));
             }
             Python py = Python.getInstance();
             PyObject receiptScanner = py.getModule("receiptScanner");
             receiptScanner.callAttr("apiResults", photoFile.getAbsolutePath());
+            // get desired fields from receipt scanner
             merchant = receiptScanner.callAttr("getMerchant");
             date = receiptScanner.callAttr("getDate");
             total = receiptScanner.callAttr("getTotal");
-            lowConfidence = merchant.equals("") || date.equals("") || total.equals("");
-            Log.i(TAG, merchant.toString());
-            return (lowConfidence);
+            // confidence is low if all fields empty, medium if one or two are, high if none are
+            confidence = receiptScanner.callAttr("getConfidence");
+            return (confidence.toString());
         }
 
         @Override
-        protected void onPostExecute(Boolean lowConfidence) {
-            if (lowConfidence) {
+        protected void onPostExecute(String confidence) {
+            if (confidence.equals("low")) {
                 Log.i(TAG, "receipt scanner confidence low");
-                Toast.makeText(getContext(),"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT);
+                Toast.makeText(context,"Failed to scan receipt, retake photo for better results!", Toast.LENGTH_SHORT).show();
+            } else if (confidence.equals("medium")) {
+                Log.i(TAG, "receipt scanner confidence medium");
+                Toast.makeText(context,"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT).show();
             }
+            // update add transactions form with api results
             etDate.setText(date.toString());
             etAmount.setText(total.toString());
             etDescription.setText(merchant.toString() + " purchase");
