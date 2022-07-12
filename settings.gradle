@@ -3,6 +3,8 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        // Chaquopy
+        maven { url "https://chaquo.com/maven" }
     }
 }
 dependencyResolutionManagement {

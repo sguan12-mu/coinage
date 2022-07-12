@@ -9,7 +9,7 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1347517730496454" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_add.xml" value="0.21875" />
-        <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.10572916666666667" />
+        <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.2917032877604167" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.21875" />
         <entry key="app/src/main/res/layout/fragment_edit_email.xml" value="0.1004130388579696" />
         <entry key="app/src/main/res/layout/fragment_edit_info.xml" value="0.165" />
@@ -22,6 +22,7 @@
         <entry key="app/src/main/res/layout/fragment_spending_limit_overview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/item_transaction.xml" value="0.2776640297710032" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.3072916666666667" />
+        <entry key="app/src/main/res/xml/fileprovider.xml" value="0.14895833333333333" />
       </map>
     </option>
   </component>

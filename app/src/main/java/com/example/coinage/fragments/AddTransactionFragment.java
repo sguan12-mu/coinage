@@ -2,8 +2,13 @@ package com.example.coinage.fragments;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.icu.text.SimpleDateFormat;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,22 +16,25 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.chaquo.python.PyObject;
+import com.chaquo.python.Python;
+import com.chaquo.python.android.AndroidPlatform;
 import com.example.coinage.R;
-import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
-import com.parse.GetCallback;
 import com.parse.ParseException;
-import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -40,12 +48,22 @@ public class AddTransactionFragment extends Fragment {
     public static final String myFormat = "MM/dd/yy";
     public final SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.US);
     public static final String overallCategory = "Overall";
+    public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 42;
+    private File photoFile;
+    public String photoFileName = "photo.jpg";
+
     private EditText etDate;
     private EditText etAmount;
     private EditText etCategory;
     private EditText etDescription;
     private Button btnAdd;
+    private ImageView ivScan;
     private Context context;
+
+    private PyObject merchant;
+    private PyObject date;
+    private PyObject total;
+    private PyObject confidence;
 
     public AddTransactionFragment() {
         // Required empty public constructor
@@ -68,6 +86,7 @@ public class AddTransactionFragment extends Fragment {
         etCategory = view.findViewById(R.id.etCategory);
         etDescription = view.findViewById(R.id.etDescription);
         btnAdd = view.findViewById(R.id.btnAdd);
+        ivScan = view.findViewById(R.id.ivScan);
 
         // clicking the editText view for date will cause a date picker calendar to pop up
         DatePickerDialog.OnDateSetListener datePicker = new DatePickerDialog.OnDateSetListener() {
@@ -101,6 +120,49 @@ public class AddTransactionFragment extends Fragment {
                 e.printStackTrace();
             }
         });
+
+        // scan a receipt
+        ivScan.setOnClickListener((View v) -> {
+            scanReceipt();
+            // async api call
+            ApiCall apiCall = new ApiCall();
+            apiCall.execute();
+        });
+    }
+
+    // async call to receipt scanner
+    private class ApiCall extends AsyncTask<Void, Void, String> {
+        @Override
+        protected String doInBackground(Void... voids) {
+            if (! Python.isStarted()) {
+                Python.start(new AndroidPlatform(context));
+            }
+            Python py = Python.getInstance();
+            PyObject receiptScanner = py.getModule("receiptScanner");
+            receiptScanner.callAttr("apiResults", photoFile.getAbsolutePath());
+            // get desired fields from receipt scanner
+            merchant = receiptScanner.callAttr("getMerchant");
+            date = receiptScanner.callAttr("getDate");
+            total = receiptScanner.callAttr("getTotal");
+            // confidence is low if all fields empty, medium if one or two are, high if none are
+            confidence = receiptScanner.callAttr("getConfidence");
+            return (confidence.toString());
+        }
+
+        @Override
+        protected void onPostExecute(String confidence) {
+            if (confidence.equals("low")) {
+                Log.i(TAG, "receipt scanner confidence low");
+                Toast.makeText(context,"Failed to scan receipt, retake photo for better results!", Toast.LENGTH_SHORT).show();
+            } else if (confidence.equals("medium")) {
+                Log.i(TAG, "receipt scanner confidence medium");
+                Toast.makeText(context,"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT).show();
+            }
+            // update add transactions form with api results
+            etDate.setText(date.toString());
+            etAmount.setText(total.toString());
+            etDescription.setText(merchant.toString() + " purchase");
+        }
     }
 
     private void saveTransaction(ParseUser currentUser, Date date, BigDecimal amount, String category, String description) {
@@ -119,5 +181,37 @@ public class AddTransactionFragment extends Fragment {
                 Log.i(TAG, "purchase added to database");
             }
         });
+    }
+
+    private void scanReceipt() {
+        // launch camera
+        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // create a file reference to access to future access
+        photoFile = getPhotoFileUri(photoFileName);
+
+        // wrap file object into a content provider
+        Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
+        intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
+
+        // safe to use intent if result is not null
+        if (intent.resolveActivity(getContext().getPackageManager()) != null) {
+            // start image capture intent to take photo
+            startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        }
+    }
+
+    // returns file for a photo stored on disk given the fileName
+    public File getPhotoFileUri(String fileName) {
+        // get safe storage director for photos
+        // use getExternalFilesDir on Context to access package-specific directories
+        File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), TAG);
+
+        // create the storage directory if it does not exist
+        if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
+            Log.d(TAG, "failed to create directory");
+        }
+
+        // return the file target for the photo based on filename
+        return new File(mediaStorageDir.getPath() + File.separator + fileName);
     }
 }
