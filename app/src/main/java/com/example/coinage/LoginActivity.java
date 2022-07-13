@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.LogInCallback;
@@ -21,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etEmail;
     private EditText etPassword;
     private Button btnLogin;
-    private Button btnRegister;
+    private TextView tvRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +44,8 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser(email, password);
             });
 
-        btnRegister = findViewById(R.id.btnRegister);
-        btnRegister.setOnClickListener((View v) -> goRegisterActivity());
+        tvRegister = findViewById(R.id.tvRegister);
+        tvRegister.setOnClickListener((View v) -> goRegisterActivity());
     }
 
     private void goMainActivity() {
