@@ -9,12 +9,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -33,6 +35,8 @@ import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -55,10 +59,12 @@ public class AddTransactionFragment extends Fragment {
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
+//    private Spinner sCategoriesAdd;
+
     private EditText etDate;
-    private EditText etAmount;
-    private Spinner sCategoriesAdd;
-    private EditText etDescription;
+    private TextInputEditText tiAmount;
+    private AutoCompleteTextView tiCategory;
+    private TextInputEditText tiDescription;
     private Button btnAdd;
     private ImageView ivScan;
     private Context context;
@@ -84,10 +90,12 @@ public class AddTransactionFragment extends Fragment {
 
         context = getContext();
 
+        tiAmount = view.findViewById(R.id.tiAmount);
         etDate = view.findViewById(R.id.etDate);
-        etAmount = view.findViewById(R.id.etAmount);
-        sCategoriesAdd = view.findViewById(R.id.sCategoriesAdd);
-        etDescription = view.findViewById(R.id.etDescription);
+
+//        sCategoriesAdd = view.findViewById(R.id.sCategoriesAdd);
+        tiCategory = view.findViewById(R.id.tiCategory);
+        tiDescription = view.findViewById(R.id.tiDescription);
         btnAdd = view.findViewById(R.id.btnAdd);
         ivScan = view.findViewById(R.id.ivScan);
 
@@ -101,16 +109,24 @@ public class AddTransactionFragment extends Fragment {
                 etDate.setText(dateFormat.format(myCalendar.getTime()));
             }
         };
-        etDate.setOnClickListener((View v) ->
-                new DatePickerDialog(getContext(),datePicker,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show());
+
+        etDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    etDate.setInputType(InputType.TYPE_NULL);
+                    new DatePickerDialog(getContext(),datePicker,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+                }
+            }
+        });
 
         // category spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.categoriesAdd,
                 R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sCategoriesAdd.setAdapter(adapter);
-        sCategoriesAdd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        tiCategory.setAdapter(adapter);
+        tiCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             }
@@ -122,9 +138,9 @@ public class AddTransactionFragment extends Fragment {
         // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
-            BigDecimal amount = new BigDecimal(etAmount.getText().toString());
-            String category = sCategoriesAdd.getSelectedItem().toString();
-            String description = etDescription.getText().toString();
+            BigDecimal amount = new BigDecimal(tiAmount.getText().toString());
+            String category = tiCategory.getEditableText().toString();
+            String description = tiDescription.getText().toString();
             Date date;
             try {
                 date = dateFormat.parse(etDate.getText().toString());
@@ -178,8 +194,8 @@ public class AddTransactionFragment extends Fragment {
             }
             // update add transactions form with api results
             etDate.setText(date.toString());
-            etAmount.setText(total.toString());
-            etDescription.setText(merchant.toString() + " purchase");
+            tiAmount.setText(total.toString());
+            tiDescription.setText(merchant.toString() + " purchase");
         }
     }
 
