@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.ParseException;
@@ -23,6 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
     private EditText etPasswordReg;
     private EditText etPasswordConfirm;
     private Button btnFinishRegister;
+    private TextView tvLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
         etPasswordReg = findViewById(R.id.etPasswordReg);
         etPasswordConfirm = findViewById(R.id.etPasswordConfirm);
         btnFinishRegister = findViewById(R.id.btnFinishRegister);
+        tvLogin = findViewById(R.id.tvLogin);
 
         btnFinishRegister.setOnClickListener((View v) -> {
                 String name = etName.getText().toString();
@@ -46,10 +49,21 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "passwords don't match", Toast.LENGTH_SHORT).show();
                 }
             });
+
+        tvLogin.setOnClickListener((View v) -> {
+            goLoginActivity();
+        });
     }
 
     private void goMainActivity() {
         Intent i = new Intent(this, MainActivity.class);
+        startActivity(i);
+        finish();
+    }
+
+    private void goLoginActivity() {
+        Log.i(TAG, "go to login user activity");
+        Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         finish();
     }
