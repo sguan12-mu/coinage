@@ -6,19 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragments.profile.ProfileFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAdd"
-        style="@style/Widget.Material3.Button"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="26dp"
-        android:text="Submit"
-        android:textSize="14sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tlDescription" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tlDate"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -88,14 +75,25 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnAdd"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="26dp"
+        android:text="Add Transaction"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tlDescription" />
 
     <ImageView
         android:id="@+id/ivScan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="100dp"
         android:src="@android:drawable/ic_menu_camera"
         app:layout_constraintBottom_toTopOf="@+id/tlDate"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@+id/tlDate" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

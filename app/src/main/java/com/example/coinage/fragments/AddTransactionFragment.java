@@ -59,8 +59,6 @@ public class AddTransactionFragment extends Fragment {
     private File photoFile;
     public String photoFileName = "photo.jpg";
 
-//    private Spinner sCategoriesAdd;
-
     private EditText etDate;
     private TextInputEditText tiAmount;
     private AutoCompleteTextView tiCategory;

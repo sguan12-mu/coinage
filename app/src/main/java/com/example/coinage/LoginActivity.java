@@ -3,6 +3,8 @@ package com.example.coinage;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseException;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,8 +21,8 @@ import com.parse.ParseUser;
 public class LoginActivity extends AppCompatActivity {
     public static final String TAG = "LoginActivity";
 
-    private EditText etEmail;
-    private EditText etPassword;
+    private TextInputEditText tiEmail;
+    private TextInputEditText tiPassword;
     private Button btnLogin;
     private TextView tvRegister;
 
@@ -34,13 +36,13 @@ public class LoginActivity extends AppCompatActivity {
             ParseUser.logOut();
         }
 
-        etEmail = findViewById(R.id.etEmail);
-        etPassword = findViewById(R.id.etPassword);
+        tiEmail = findViewById(R.id.tiEmail);
+        tiPassword = findViewById(R.id.tiPassword);
 
         btnLogin = findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener((View v) -> {
-                String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
+                String email = tiEmail.getText().toString();
+                String password = tiPassword.getText().toString();
                 loginUser(email, password);
             });
 
