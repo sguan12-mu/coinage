@@ -14,4 +14,21 @@
         <!-- Customize your theme here. -->
         <item name="fontFamily">@font/rubik_light</item>
     </style>
+    <style name="Widget.App.CardView" parent="Widget.MaterialComponents.CardView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cardCornerRadius">20dp</item>
+    </style>
+    <style name="Widget.App.BigCardView" parent="Widget.MaterialComponents.CardView">
+        <item name="materialThemeOverlay">@style/ThemeOverlay.App.Card</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cardCornerRadius">40dp</item>
+    </style>
+
+    <style name="ThemeOverlay.App.Card" parent="">
+        <item name="colorSurface">@color/yellow</item>
+        <item name="colorOnSurface">@color/black</item>
+    </style>
 </resources>
