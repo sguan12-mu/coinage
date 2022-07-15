@@ -43,7 +43,11 @@ public class MainActivity extends AppCompatActivity {
                         fragment = new ProfileFragment();
                         break;
                 }
-                fragmentManager.beginTransaction().replace(R.id.frameLayout, fragment).commit();
+                fragmentManager.beginTransaction()
+                    .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out)
+                    .replace(R.id.frameLayout, fragment).commit();
                 Log.i(TAG, "bottom navigation bar created");
                 return true;
             }

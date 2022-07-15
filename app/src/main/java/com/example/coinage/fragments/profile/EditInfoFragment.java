@@ -74,21 +74,30 @@ public class EditInfoFragment extends Fragment {
 
     private void goEditName() {
         FragmentTransaction fragmentTransaction = getActivity()
-                .getSupportFragmentManager().beginTransaction();
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new EditNameFragment());
         fragmentTransaction.commit();
     }
 
     private void goEditEmail() {
         FragmentTransaction fragmentTransaction = getActivity()
-                .getSupportFragmentManager().beginTransaction();
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new EditEmailFragment());
         fragmentTransaction.commit();
     }
 
     private void goEditPassword() {
         FragmentTransaction fragmentTransaction = getActivity()
-                .getSupportFragmentManager().beginTransaction();
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new EditPasswordFragment());
         fragmentTransaction.commit();
     }
