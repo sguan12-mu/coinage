@@ -33,6 +33,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.chaquo.python.PyObject;
 import com.chaquo.python.Python;
 import com.chaquo.python.android.AndroidPlatform;
+import com.example.coinage.MainActivity;
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
 import com.google.android.material.textfield.TextInputEditText;
@@ -151,10 +152,13 @@ public class AddTransactionFragment extends Fragment {
         // scan a receipt
         ivScan.setOnClickListener((View v) -> {
             scanReceipt();
-            // async api call
-            ApiCall apiCall = new ApiCall();
-            apiCall.execute();
         });
+
+        // if redirected to this fragment via long clicking, scan receipt
+        Bundle bundle = getArguments();
+        if (bundle != null && bundle.getBoolean(MainActivity.class.getSimpleName())) {
+            scanReceipt();
+        }
     }
 
     // async call to receipt scanner
@@ -225,6 +229,10 @@ public class AddTransactionFragment extends Fragment {
             // start image capture intent to take photo
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
+
+        // async api call
+        ApiCall apiCall = new ApiCall();
+        apiCall.execute();
     }
 
     // returns file for a photo stored on disk given the fileName
