@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
@@ -19,10 +20,10 @@ import com.parse.SignUpCallback;
 public class RegisterActivity extends AppCompatActivity {
     public static final String TAG = "RegisterActivity";
 
-    private EditText etName;
-    private EditText etEmailReg;
-    private EditText etPasswordReg;
-    private EditText etPasswordConfirm;
+    private TextInputEditText tiName;
+    private TextInputEditText tiEmailReg;
+    private TextInputEditText tiPasswordReg;
+    private TextInputEditText tiPasswordConfirm;
     private Button btnFinishRegister;
     private TextView tvLogin;
 
@@ -31,18 +32,18 @@ public class RegisterActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        etName = findViewById(R.id.etName);
-        etEmailReg = findViewById(R.id.etEmailReg);
-        etPasswordReg = findViewById(R.id.etPasswordReg);
-        etPasswordConfirm = findViewById(R.id.etPasswordConfirm);
+        tiName = findViewById(R.id.tiName);
+        tiEmailReg = findViewById(R.id.tiEmailReg);
+        tiPasswordReg = findViewById(R.id.tiPasswordReg);
+        tiPasswordConfirm = findViewById(R.id.tiPasswordConfirm);
         btnFinishRegister = findViewById(R.id.btnFinishRegister);
         tvLogin = findViewById(R.id.tvLogin);
 
         btnFinishRegister.setOnClickListener((View v) -> {
-                String name = etName.getText().toString();
-                String email = etEmailReg.getText().toString();
-                String password = etPasswordReg.getText().toString();
-                String passwordConfirm = etPasswordConfirm.getText().toString();
+                String name = tiName.getText().toString();
+                String email = tiEmailReg.getText().toString();
+                String password = tiPasswordReg.getText().toString();
+                String passwordConfirm = tiPasswordConfirm.getText().toString();
                 if (password.equals(passwordConfirm)) {
                     signupUser(name, email, password);
                 } else {
@@ -56,6 +57,7 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void goMainActivity() {
+        Log.i(TAG, "proceed to app (default page is transaction list)");
         Intent i = new Intent(this, MainActivity.class);
         startActivity(i);
         finish();

@@ -1,5 +1,6 @@
 package com.example.coinage.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,15 +14,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.TextView;
 
 import com.example.coinage.R;
 import com.example.coinage.TransactionsAdapter;
+import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
+import com.google.android.material.card.MaterialCardView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,7 +38,8 @@ public class TransactionListFragment extends Fragment {
     private RecyclerView rvTransactions;
     private TransactionsAdapter adapter;
     private List<Transaction> allTransactions;
-    private Button button2;
+    private MaterialCardView cardOverview;
+    private TextView tvTotalSpending;
 
     public TransactionListFragment() {
         // Required empty public constructor
@@ -58,9 +65,38 @@ public class TransactionListFragment extends Fragment {
         // populate recycler view with transactions
         queryTransactions();
 
+        tvTotalSpending = view.findViewById(R.id.tvDateDetail);
+        totalSpending();
+
         // (placeholder button, will replace with some representation of overall spending limit)
-        button2 = view.findViewById(R.id.button2);
-        button2.setOnClickListener((View v) -> goSpendingLimitOverview());
+        cardOverview = view.findViewById(R.id.cardOverview);
+        cardOverview.setOnClickListener((View v) -> goSpendingLimitOverview());
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        // query again once returned to this fragment
+        queryTransactions();
+    }
+
+    private void totalSpending() {
+        // calculate total spendings
+        ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
+        transactionQuery.findInBackground(new FindCallback<Transaction>() {
+            BigDecimal totalSpendings = BigDecimal.valueOf(0);
+            @Override
+            public void done(List<Transaction> transactions, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "issue with getting transactions", e);
+                    return;
+                }
+                for (Transaction transaction : transactions) {
+                    totalSpendings = totalSpendings.add(BigDecimal.valueOf(transaction.getAmount().floatValue()));
+                }
+                tvTotalSpending.setText("$" + String.format("%.2f",totalSpendings));
+            }
+        });
     }
 
     private void goSpendingLimitOverview() {
@@ -73,9 +109,9 @@ public class TransactionListFragment extends Fragment {
     private void queryTransactions() {
         ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
         // set query parameters
-        query.include(Transaction.KEY_USER);
-        query.setLimit(20);
-        query.addDescendingOrder("createdAt");
+        query.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
+        query.setLimit(10);
+        query.addDescendingOrder("date");
         query.findInBackground(new FindCallback<Transaction>() {
             @Override
             public void done(List<Transaction> transactions, ParseException e) {
@@ -85,6 +121,7 @@ public class TransactionListFragment extends Fragment {
                     return;
                 }
                 // save received posts to list and notify adapter of new data
+                allTransactions.clear();
                 allTransactions.addAll(transactions);
                 adapter.notifyDataSetChanged();
             }

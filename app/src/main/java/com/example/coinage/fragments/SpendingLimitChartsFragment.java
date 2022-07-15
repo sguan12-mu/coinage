@@ -27,6 +27,7 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -55,6 +56,7 @@ public class SpendingLimitChartsFragment extends Fragment {
         // generate a spendings vs spending limit chart for each category
         ParseQuery<SpendingLimit> spendingLimitQuery = ParseQuery.getQuery(SpendingLimit.class);
         spendingLimitQuery.include(SpendingLimit.KEY_CATEGORY);
+        spendingLimitQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
         spendingLimitQuery.findInBackground(new FindCallback<SpendingLimit>() {
             @Override
             public void done(List<SpendingLimit> spendingLimits, ParseException e) {
@@ -70,7 +72,10 @@ public class SpendingLimitChartsFragment extends Fragment {
                     BigDecimal spendingLimitAmount = BigDecimal.valueOf(spendingLimit.getAmount().floatValue());
 
                     ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
-                    transactionQuery.whereEqualTo(Transaction.KEY_CATEGORY, category);
+                    if (!category.equals("Overall")) {
+                        // don't filter by category if spending limit is for overall spendings
+                        transactionQuery.whereEqualTo(Transaction.KEY_CATEGORY, category);
+                    }
                     transactionQuery.findInBackground(new FindCallback<Transaction>() {
                         BigDecimal categoryCumulativeAmount = BigDecimal.valueOf(0);
                         @Override
