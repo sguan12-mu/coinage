@@ -23,7 +23,7 @@
 
         <View
             android:id="@+id/divider5"
-            android:layout_width="390dp"
+            android:layout_width="360dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
             android:background="?android:attr/listDivider"
@@ -60,7 +60,7 @@
 
         <View
             android:id="@+id/divider4"
-            android:layout_width="390dp"
+            android:layout_width="360dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
             android:background="?android:attr/listDivider"
@@ -177,7 +177,6 @@
                 android:layout_marginStart="48dp"
                 android:layout_marginTop="48dp"
                 android:text="Name"
-                android:textSize="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

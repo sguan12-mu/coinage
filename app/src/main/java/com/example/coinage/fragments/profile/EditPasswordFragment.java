@@ -12,9 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coinage.R;
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 
@@ -22,9 +24,9 @@ import com.parse.ParseUser;
 public class EditPasswordFragment extends Fragment {
     public static final String TAG = "EditPasswordFragment";
 
-    private EditText etCurrentPassword;
-    private EditText etNewPassword;
-    private EditText etNewPasswordConfirm;
+    private TextInputEditText tiCurrentPass;
+    private TextInputEditText tiNewPassword;
+    private TextInputEditText tiConfirmPassword;
     private Button btnChangePassword;
 
     public EditPasswordFragment() {
@@ -41,14 +43,14 @@ public class EditPasswordFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCurrentPassword = view.findViewById(R.id.etCurrentName);
-        etNewPassword = view.findViewById(R.id.etNewPassword);
-        etNewPasswordConfirm = view.findViewById(R.id.etNewPasswordConfirm);
-        btnChangePassword = view.findViewById(R.id.btnChangeName);
+        tiCurrentPass = view.findViewById(R.id.tiCurrentPass);
+        tiNewPassword = view.findViewById(R.id.tiNewPassword);
+        tiConfirmPassword = view.findViewById(R.id.tiConfirmPassword);
+        btnChangePassword = view.findViewById(R.id.btnChangePassword);
         btnChangePassword.setOnClickListener((View v) -> {
-                String currentPassword = etCurrentPassword.getText().toString();
-                String newPassword = etNewPassword.getText().toString();
-                String newPasswordConfirm = etNewPasswordConfirm.getText().toString();
+                String currentPassword = tiCurrentPass.getText().toString();
+                String newPassword = tiNewPassword.getText().toString();
+                String newPasswordConfirm = tiConfirmPassword.getText().toString();
 
                 // verifyPassword not supported, logging in to verify:
                 ParseUser user = null;

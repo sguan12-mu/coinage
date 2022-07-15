@@ -10,7 +10,7 @@
         android:id="@+id/cardOverview"
         style="@style/Widget.App.CardView"
         android:layout_width="300dp"
-        android:layout_height="130dp"
+        android:layout_height="110dp"
         android:layout_marginTop="30dp"
         android:checkable="false"
         android:clickable="true"
@@ -35,7 +35,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/tvName"
+                android:id="@+id/tvDateDetail"
                 style="@style/TextAppearance.Coinage.Headline2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

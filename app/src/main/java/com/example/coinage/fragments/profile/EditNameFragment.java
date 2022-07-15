@@ -15,13 +15,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.coinage.R;
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseUser;
 
 // profile information and settings page
 public class EditNameFragment extends Fragment {
     public static final String TAG = "EditNameFragment";
 
-    private EditText etCurrentName;
+    private TextInputEditText tiNewName;
     private Button btnChangeName;
 
     public EditNameFragment() {
@@ -38,11 +39,11 @@ public class EditNameFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCurrentName = view.findViewById(R.id.etCurrentName);
-        etCurrentName.setText(ParseUser.getCurrentUser().getUsername());
+        tiNewName = view.findViewById(R.id.tiNewName);
+        tiNewName.setText(ParseUser.getCurrentUser().getUsername());
         btnChangeName = view.findViewById(R.id.btnChangeName);
         btnChangeName.setOnClickListener((View v) -> {
-                String name = etCurrentName.getText().toString();
+                String name = tiNewName.getText().toString();
                 // update name
                 ParseUser.getCurrentUser().setUsername(name);
                 ParseUser.getCurrentUser().saveInBackground();

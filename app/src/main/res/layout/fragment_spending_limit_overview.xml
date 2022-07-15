@@ -7,7 +7,7 @@
     tools:context=".fragments.profile.ProfileFragment">
 
     <TextView
-        android:id="@+id/tvName"
+        android:id="@+id/tvDateDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -18,11 +18,11 @@
 
     <ScrollView
         android:layout_width="319dp"
-        android:layout_height="600dp"
+        android:layout_height="560dp"
         android:layout_marginTop="13dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvName">
+        app:layout_constraintTop_toBottomOf="@+id/tvDateDetail">
 
         <LinearLayout
             android:id="@+id/chartContainer"
@@ -32,7 +32,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvName" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDateDetail" />
     </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

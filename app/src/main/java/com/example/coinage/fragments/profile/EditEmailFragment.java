@@ -15,15 +15,16 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.coinage.R;
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseUser;
 
 // profile information and settings page
 public class EditEmailFragment extends Fragment {
     public static final String TAG = "EditEmailFragment";
 
-    private EditText etCurrentEmail;
-    private EditText etNewEmail;
-    private EditText etNewEmailConfirm;
+    private TextInputEditText tiCurrentEmail;
+    private TextInputEditText tiNewEmail;
+    private TextInputEditText tiConfirmEmail;
     private Button btnChangeEmail;
 
     public EditEmailFragment() {
@@ -40,14 +41,14 @@ public class EditEmailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        etCurrentEmail = view.findViewById(R.id.etCurrentName);
-        etNewEmail = view.findViewById(R.id.etNewPassword);
-        etNewEmailConfirm = view.findViewById(R.id.etNewPasswordConfirm);
-        btnChangeEmail = view.findViewById(R.id.btnChangeName);
+        tiCurrentEmail = view.findViewById(R.id.tiCurrentEmail);
+        tiNewEmail = view.findViewById(R.id.tiNewEmail);
+        tiConfirmEmail = view.findViewById(R.id.tiConfirmEmail);
+        btnChangeEmail = view.findViewById(R.id.btnChangeEmail);
         btnChangeEmail.setOnClickListener((View v) -> {
-                String currentEmail = etCurrentEmail.getText().toString();
-                String newEmail = etNewEmail.getText().toString();
-                String newEmailConfirm = etNewEmailConfirm.getText().toString();
+                String currentEmail = tiCurrentEmail.getText().toString();
+                String newEmail = tiNewEmail.getText().toString();
+                String newEmailConfirm = tiConfirmEmail.getText().toString();
                 if (!currentEmail.equals(ParseUser.getCurrentUser().getEmail())) {
                     Toast.makeText(getContext(), "Incorrect current email", Toast.LENGTH_SHORT).show();
                 } else if (!newEmail.equals(newEmailConfirm)) {
