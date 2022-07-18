@@ -5,27 +5,37 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.coinage.LoginActivity;
 import com.example.coinage.R;
+import com.example.coinage.models.Transaction;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 // profile information and settings page
 public class ProfileFragment extends Fragment {
     public static final String TAG = "ProfileFragment";
 
     private TextView tvName;
-    private Button btnLogout;
-    private Button btnEditInfo;
-    private Button btnSetLimits;
+    private ConstraintLayout clLogOut;
+    private ConstraintLayout clEditInfo;
+    private ConstraintLayout clSetLimits;
+    private TextView tvSpent;
+    private TextView tvNumTransactions;
 
     public ProfileFragment() {
         // Required empty public constructor
@@ -44,14 +54,18 @@ public class ProfileFragment extends Fragment {
         tvName = view.findViewById(R.id.tvName);
         tvName.setText(ParseUser.getCurrentUser().getUsername());
 
-        btnLogout = view.findViewById(R.id.btnLogout);
-        btnLogout.setOnClickListener((View v) -> logoutUser());
+        clLogOut = view.findViewById(R.id.clLogOut);
+        clLogOut.setOnClickListener((View v) -> logoutUser());
 
-        btnEditInfo = view.findViewById(R.id.btnEditInfo);
-        btnEditInfo.setOnClickListener((View v) -> goEditInfo());
+        clEditInfo = view.findViewById(R.id.clEditInfo);
+        clEditInfo.setOnClickListener((View v) -> goEditInfo());
 
-        btnSetLimits = view.findViewById(R.id.btnSetLimits);
-        btnSetLimits.setOnClickListener((View v) -> goSetLimits());
+        clSetLimits = view.findViewById(R.id.clSetLimits);
+        clSetLimits.setOnClickListener((View v) -> goSetLimits());
+
+        tvSpent = view.findViewById(R.id.tvSpent);
+        tvNumTransactions = view.findViewById(R.id.tvNumTransactions);
+        fetchAndUpdateTransactionCount();
     }
 
     private void goLoginActivity() {
@@ -79,5 +93,26 @@ public class ProfileFragment extends Fragment {
                 .getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.frameLayout, new SetSpendingLimitsFragment());
         fragmentTransaction.commit();
+    }
+
+    private void fetchAndUpdateTransactionCount() {
+        // calculate total spendings
+        ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
+        transactionQuery.findInBackground(new FindCallback<Transaction>() {
+            BigDecimal totalSpendings = BigDecimal.valueOf(0);
+            @Override
+            public void done(List<Transaction> transactions, ParseException e) {
+                if (e != null) {
+                    Log.e(TAG, "issue with getting transactions", e);
+                    return;
+                }
+                for (Transaction transaction : transactions) {
+                    totalSpendings = totalSpendings.add(BigDecimal.valueOf(transaction.getAmount().floatValue()));
+                }
+                tvSpent.setText("$" + String.format("%.2f",totalSpendings));
+                // count number of transactions saved
+                tvNumTransactions.setText(String.valueOf(transactions.size()));
+            }
+        });
     }
 }

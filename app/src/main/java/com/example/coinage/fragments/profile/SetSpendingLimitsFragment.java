@@ -13,12 +13,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.coinage.R;
 import com.example.coinage.models.SpendingLimit;
+import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 import com.parse.ParseException;
@@ -28,8 +30,8 @@ import java.math.BigDecimal;
 public class SetSpendingLimitsFragment extends Fragment implements AdapterView.OnItemSelectedListener {
     public static final String TAG = "SetLimitsFragment";
 
-    private Spinner sCategories;
-    private EditText etSetAmount;
+    private AutoCompleteTextView tiCategoryLimit;
+    private TextInputEditText tiAmountLimit;
     private Button btnSetLimit;
 
     public SetSpendingLimitsFragment() {
@@ -46,22 +48,22 @@ public class SetSpendingLimitsFragment extends Fragment implements AdapterView.O
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sCategories = view.findViewById(R.id.sCategories);
-        etSetAmount = view.findViewById(R.id.etSetAmount);
+        tiCategoryLimit = view.findViewById(R.id.tiCategoryLimit);
+        tiAmountLimit = view.findViewById(R.id.tiAmountLimit);
         btnSetLimit = view.findViewById(R.id.btnSetLimit);
 
         // category spinner
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
                 R.array.categories,
-                android.R.layout.simple_spinner_item);
+                R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        sCategories.setAdapter(adapter);
-        sCategories.setOnItemSelectedListener(this);
+        tiCategoryLimit.setAdapter(adapter);
+        tiCategoryLimit.setOnItemSelectedListener(this);
 
         btnSetLimit.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
-            BigDecimal amount = new BigDecimal(etSetAmount.getText().toString());
-            String category = sCategories.getSelectedItem().toString();
+            BigDecimal amount = new BigDecimal(tiAmountLimit.getText().toString());
+            String category = tiCategoryLimit.getEditableText().toString();
             saveLimit(currentUser, amount, category);
             goProfile();
         });

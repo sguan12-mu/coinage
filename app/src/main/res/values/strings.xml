@@ -9,7 +9,15 @@
     <!--spinner prompt-->
     <string name="prompt">categories</string>
 
-    <!-- Categories array for spinner options -->
+    <!-- Categories array for spinner (adding transactions) options -->
+    <array name="categoriesAdd">
+        <item>Food</item>
+        <item>Entertainment</item>
+        <item>Clothing</item>
+        <item>Travel</item>
+        <item>Housing</item>
+    </array>
+    <!-- Categories array for spinner (spending limits) options -->
     <array name="categories">
         <item>Overall</item>
         <item>Food</item>

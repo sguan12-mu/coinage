@@ -5,12 +5,14 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_home.xml" value="0.2526249950518832" />
-        <entry key="app/src/main/res/layout/activity_login.xml" value="0.11651469098277609" />
+        <entry key="app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1347517730496454" />
         <entry key="app/src/main/res/layout/activity_register.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/custom_spinner_item.xml" value="0.10461956521739131" />
         <entry key="app/src/main/res/layout/fragment_add.xml" value="0.21875" />
-        <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.2917032877604167" />
+        <entry key="app/src/main/res/layout/fragment_add_transaction.xml" value="0.27710062662760426" />
         <entry key="app/src/main/res/layout/fragment_detail.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/fragment_detail_fragment.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_edit_email.xml" value="0.1004130388579696" />
         <entry key="app/src/main/res/layout/fragment_edit_info.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_edit_name.xml" value="0.2526249950518832" />
@@ -19,7 +21,9 @@
         <entry key="app/src/main/res/layout/fragment_overview.xml" value="0.11651469098277609" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.12462006079027356" />
         <entry key="app/src/main/res/layout/fragment_set_limits.xml" value="0.14285714285714285" />
-        <entry key="app/src/main/res/layout/fragment_spending_limit_overview.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_set_spending_limits.xml" value="0.301953125" />
+        <entry key="app/src/main/res/layout/fragment_spending_limit_overview.xml" value="0.23202819824218757" />
+        <entry key="app/src/main/res/layout/fragment_transaction_list.xml" value="0.24188271215406495" />
         <entry key="app/src/main/res/layout/item_transaction.xml" value="0.2776640297710032" />
         <entry key="app/src/main/res/menu/menu_bottom_navigation.xml" value="0.3072916666666667" />
         <entry key="app/src/main/res/xml/fileprovider.xml" value="0.14895833333333333" />

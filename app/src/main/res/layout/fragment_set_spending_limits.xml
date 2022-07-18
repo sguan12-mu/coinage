@@ -7,37 +7,52 @@
     android:outlineAmbientShadowColor="#020202"
     tools:context=".fragments.profile.ProfileFragment">
 
-    <Spinner
-        android:id="@+id/sCategories"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tlCategoryLimit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="210dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="197dp"
-        android:spinnerMode="dropdown"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="240dp"
+        android:hint="category"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <EditText
-        android:id="@+id/etSetAmount"
-        android:layout_width="wrap_content"
+        <AutoCompleteTextView
+            android:id="@+id/tiCategoryLimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tlAmountLimit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="210dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:ems="10"
         android:hint="amount"
-        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sCategories" />
+        app:layout_constraintTop_toBottomOf="@+id/tlCategoryLimit">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiAmountLimit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSetLimit"
+        style="@style/Widget.Material3.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        android:text="Submit"
+        android:layout_marginTop="26dp"
+        android:text="Set Spending Limit"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etSetAmount" />
+        app:layout_constraintTop_toBottomOf="@+id/tlAmountLimit" />
 </androidx.constraintlayout.widget.ConstraintLayout>

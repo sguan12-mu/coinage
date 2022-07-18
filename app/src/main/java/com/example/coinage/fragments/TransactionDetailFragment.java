@@ -42,7 +42,7 @@ public class TransactionDetailFragment extends Fragment {
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        tvDateDetail = view.findViewById(R.id.tvName);
+        tvDateDetail = view.findViewById(R.id.tvDateDetail);
         tvAmountDetail = view.findViewById(R.id.tvAmountDetail);
         tvCategoryDetail = view.findViewById(R.id.tvCategoryDetail);
         tvDescriptionDetail = view.findViewById(R.id.tvDescriptionDetail);
