@@ -83,14 +83,20 @@ public class ProfileFragment extends Fragment {
 
     private void goEditInfo() {
         FragmentTransaction fragmentTransaction = getActivity()
-                .getSupportFragmentManager().beginTransaction();
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new EditInfoFragment());
         fragmentTransaction.commit();
     }
 
     private void goSetLimits() {
         FragmentTransaction fragmentTransaction = getActivity()
-                .getSupportFragmentManager().beginTransaction();
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                    R.anim.fade_in,
+                    R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new SetSpendingLimitsFragment());
         fragmentTransaction.commit();
     }

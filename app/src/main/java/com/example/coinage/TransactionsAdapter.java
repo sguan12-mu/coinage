@@ -99,7 +99,10 @@ public class TransactionsAdapter extends RecyclerView.Adapter<TransactionsAdapte
                 detailFragment.setArguments(bundle);
                 // switch to desired fragment
                 FragmentTransaction fragmentTransaction = ((AppCompatActivity)context)
-                        .getSupportFragmentManager().beginTransaction();
+                        .getSupportFragmentManager().beginTransaction()
+                        .setCustomAnimations(
+                            R.anim.fade_in,
+                            R.anim.fade_out);
                 fragmentTransaction.replace(R.id.frameLayout, detailFragment);
                 fragmentTransaction.addToBackStack(TransactionsAdapter.class.getSimpleName()).commit();
             }
