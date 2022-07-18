@@ -66,7 +66,7 @@ public class TransactionListFragment extends Fragment {
         queryTransactions();
 
         tvTotalSpending = view.findViewById(R.id.tvDateDetail);
-        totalSpending();
+        fetchAndUpdateTotalSpending();
 
         // (placeholder button, will replace with some representation of overall spending limit)
         cardOverview = view.findViewById(R.id.cardOverview);
@@ -80,7 +80,7 @@ public class TransactionListFragment extends Fragment {
         queryTransactions();
     }
 
-    private void totalSpending() {
+    private void fetchAndUpdateTotalSpending() {
         // calculate total spendings
         ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
         transactionQuery.findInBackground(new FindCallback<Transaction>() {

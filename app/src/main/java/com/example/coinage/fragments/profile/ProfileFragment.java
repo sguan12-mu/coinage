@@ -65,7 +65,7 @@ public class ProfileFragment extends Fragment {
 
         tvSpent = view.findViewById(R.id.tvSpent);
         tvNumTransactions = view.findViewById(R.id.tvNumTransactions);
-        countTransactions();
+        fetchAndUpdateTransactionCount();
     }
 
     private void goLoginActivity() {
@@ -95,7 +95,7 @@ public class ProfileFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void countTransactions() {
+    private void fetchAndUpdateTransactionCount() {
         // calculate total spendings
         ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
         transactionQuery.findInBackground(new FindCallback<Transaction>() {

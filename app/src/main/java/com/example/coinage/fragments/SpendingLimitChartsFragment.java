@@ -72,7 +72,7 @@ public class SpendingLimitChartsFragment extends Fragment {
                     BigDecimal spendingLimitAmount = BigDecimal.valueOf(spendingLimit.getAmount().floatValue());
 
                     ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
-                    if (!category.equals("Overall")) {
+                    if (!category.equals(Transaction.CATEGORY_OVERALL)) {
                         // don't filter by category if spending limit is for overall spendings
                         transactionQuery.whereEqualTo(Transaction.KEY_CATEGORY, category);
                     }
@@ -99,8 +99,8 @@ public class SpendingLimitChartsFragment extends Fragment {
     private void generateChart (View view, BigDecimal spendingLimitAmount, BigDecimal categoryCumulativeAmount, String label) {
         // generate a chart for each pairing
         List<BarEntry> entries = new ArrayList<BarEntry>();
-        entries.add(new BarEntry(1, categoryCumulativeAmount.floatValue(), "Amount Spent"));
-        entries.add(new BarEntry(2, spendingLimitAmount.floatValue(), "Spending Limit"));
+        entries.add(new BarEntry(1, categoryCumulativeAmount.floatValue()));
+        entries.add(new BarEntry(2, spendingLimitAmount.floatValue()));
         BarDataSet data = new BarDataSet(entries, "Label");
         data.setColor(getResources().getColor(R.color.yellow));
         BarData barData = new BarData(data);

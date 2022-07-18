@@ -91,7 +91,6 @@ public class AddTransactionFragment extends Fragment {
         tiAmount = view.findViewById(R.id.tiAmount);
         etDate = view.findViewById(R.id.etDate);
 
-//        sCategoriesAdd = view.findViewById(R.id.sCategoriesAdd);
         tiCategory = view.findViewById(R.id.tiCategory);
         tiDescription = view.findViewById(R.id.tiDescription);
         btnAdd = view.findViewById(R.id.btnAdd);
@@ -111,6 +110,7 @@ public class AddTransactionFragment extends Fragment {
         etDate.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                // prevent keyboard from popping up
                 if(hasFocus) {
                     etDate.setInputType(InputType.TYPE_NULL);
                     new DatePickerDialog(getContext(),datePicker,myCalendar.get(Calendar.YEAR),myCalendar.get(Calendar.MONTH),myCalendar.get(Calendar.DAY_OF_MONTH)).show();
@@ -124,14 +124,6 @@ public class AddTransactionFragment extends Fragment {
                 R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tiCategory.setAdapter(adapter);
-        tiCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
 
         // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener((View v) -> {

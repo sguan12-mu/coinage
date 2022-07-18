@@ -18,6 +18,7 @@ public class Transaction extends ParseObject {
     public static final String KEY_DATE = "date";
     public static final String KEY_AMOUNT = "amount";
     public static final String KEY_CATEGORY = "category";
+    public static final String CATEGORY_OVERALL = "Overall";
     public static final String KEY_DESCRIPTION = "description";
 
     public ParseUser getUser() {
