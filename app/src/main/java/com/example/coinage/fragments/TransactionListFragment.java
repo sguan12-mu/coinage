@@ -86,9 +86,6 @@ public class TransactionListFragment extends Fragment {
 
         // populate recycler view with transactions
         queryTransactions(NO_SKIP);
-        if (allTransactions.isEmpty()) {
-            getView().findViewById(R.id.emptyRvLayout).setVisibility(View.VISIBLE);
-        }
 
         // only show message if there are no transactions
         view.findViewById(R.id.emptyRvLayout).setVisibility(View.INVISIBLE);
@@ -149,6 +146,10 @@ public class TransactionListFragment extends Fragment {
                 // save received posts to list and notify adapter of new data
                 if (skip == NO_SKIP) {
                     adapter.clear();
+                    // if user has no transactions, show message
+                    if (transactions.isEmpty()) {
+                        getView().findViewById(R.id.emptyRvLayout).setVisibility(View.VISIBLE);
+                    }
                 }
                 allTransactions.addAll(transactions);
                 adapter.notifyDataSetChanged();
