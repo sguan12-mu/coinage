@@ -86,6 +86,7 @@ public class TransactionListFragment extends Fragment {
     private void fetchAndUpdateTotalSpending() {
         // calculate total spendings
         ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
+        transactionQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
         transactionQuery.findInBackground(new FindCallback<Transaction>() {
             BigDecimal totalSpendings = BigDecimal.valueOf(0);
             @Override
@@ -128,8 +129,6 @@ public class TransactionListFragment extends Fragment {
                 }
                 // save received posts to list and notify adapter of new data
                 allTransactions.clear();
-                allTransactions.addAll(transactions);
-                adapter.notifyDataSetChanged();
                 if (transactions.isEmpty()) {
                     getView().findViewById(R.id.emptyRvLayout).setVisibility(View.VISIBLE);
                 } else {

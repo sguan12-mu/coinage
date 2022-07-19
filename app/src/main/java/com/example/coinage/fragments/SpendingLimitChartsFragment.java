@@ -72,6 +72,7 @@ public class SpendingLimitChartsFragment extends Fragment {
                     BigDecimal spendingLimitAmount = BigDecimal.valueOf(spendingLimit.getAmount().floatValue());
 
                     ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
+                    transactionQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
                     if (!category.equals(Transaction.CATEGORY_OVERALL)) {
                         // don't filter by category if spending limit is for overall spendings
                         transactionQuery.whereEqualTo(Transaction.KEY_CATEGORY, category);

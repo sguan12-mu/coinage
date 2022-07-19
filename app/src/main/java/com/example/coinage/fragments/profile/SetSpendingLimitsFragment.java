@@ -95,6 +95,8 @@ public class SetSpendingLimitsFragment extends Fragment implements AdapterView.O
         spendingLimit.setAmount(amount);
         spendingLimit.setCategory(category);
         spendingLimit.saveInBackground(new SaveCallback() {
+        spendingLimitQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
+        spendingLimitQuery.whereEqualTo(SpendingLimit.KEY_CATEGORY, category);
             @Override
             public void done(ParseException e) {
                 if (e != null) {
