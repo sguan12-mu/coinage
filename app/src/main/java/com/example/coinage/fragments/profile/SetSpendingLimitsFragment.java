@@ -64,6 +64,16 @@ public class SetSpendingLimitsFragment extends Fragment implements AdapterView.O
             ParseUser currentUser = ParseUser.getCurrentUser();
             BigDecimal amount = new BigDecimal(tiAmountLimit.getText().toString());
             String category = tiCategoryLimit.getEditableText().toString();
+            if (category.equals("")) {
+                Toast.makeText(getContext(), "Category should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String stringAmount = tiAmountLimit.getText().toString();
+            if (stringAmount.equals("")) {
+                Toast.makeText(getContext(), "Spending limit amount should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            BigDecimal amount = new BigDecimal(stringAmount);
             saveLimit(currentUser, amount, category);
             goProfile();
         });

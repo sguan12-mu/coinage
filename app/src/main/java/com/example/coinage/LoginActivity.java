@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void loginUser(String email, String password) {
         if (email == null || password == null) {
-            Toast.makeText(LoginActivity.this, "field blank", Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, "Please complete all fields", Toast.LENGTH_SHORT).show();
             return;
         }
         ParseUser.logInInBackground(email, password, new LogInCallback() {
@@ -74,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
             public void done(ParseUser user, ParseException e) {
                 if (e != null) {
                     Log.e(TAG, "issue with login", e);
-                    Toast.makeText(LoginActivity.this, "issue with login", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Issue with login", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 goMainActivity();

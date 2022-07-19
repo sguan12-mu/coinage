@@ -130,8 +130,26 @@ public class AddTransactionFragment extends Fragment {
         btnAdd.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
             BigDecimal amount = new BigDecimal(tiAmount.getText().toString());
+            String stringDate = etDate.getText().toString();
+            if (stringDate.equals("")) {
+                Toast.makeText(getContext(), "Date of purchase should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String stringAmount = tiAmount.getText().toString();
+            if (stringAmount.equals("")) {
+                Toast.makeText(getContext(), "Purchase cost should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String category = tiCategory.getEditableText().toString();
+            if (category.equals("")) {
+                Toast.makeText(getContext(), "Category should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String description = tiDescription.getText().toString();
+            if (description.equals("")) {
+                Toast.makeText(getContext(), "Description should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Date date;
             try {
                 date = dateFormat.parse(etDate.getText().toString());

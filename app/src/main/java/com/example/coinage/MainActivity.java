@@ -67,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
                         R.anim.fade_in,
                         R.anim.fade_out)
                     .replace(R.id.frameLayout, fragment).commit();
-                Log.i(TAG, "bottom navigation bar created");
                 return true;
             }
         });
