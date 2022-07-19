@@ -154,15 +154,11 @@ public class AddTransactionFragment extends Fragment {
             }
             Date date;
             try {
-                date = dateFormat.parse(etDate.getText().toString());
                 saveTransaction(currentUser, date, amount, category, description);
                 // return to Home view after transaction is saved
                 FragmentTransaction fragmentTransaction = getActivity()
                         .getSupportFragmentManager().beginTransaction()
                         .setCustomAnimations(
-                            R.anim.fade_in,
-                            R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
                 fragmentTransaction.commit();
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
