@@ -131,7 +131,6 @@ public class AddTransactionFragment extends Fragment {
         // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
-            BigDecimal amount = new BigDecimal(tiAmount.getText().toString());
             String stringDate = etDate.getText().toString();
             if (stringDate.equals("")) {
                 Toast.makeText(getContext(), "Date of purchase should not be blank", Toast.LENGTH_SHORT).show();
@@ -154,12 +153,11 @@ public class AddTransactionFragment extends Fragment {
             }
             Date date;
             try {
+                date = dateFormat.parse(stringDate);
+                BigDecimal amount = new BigDecimal(stringAmount);
                 saveTransaction(currentUser, date, amount, category, description);
                 // return to Home view after transaction is saved
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                fragmentTransaction.commit();
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.action_home);
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
@@ -206,7 +204,6 @@ public class AddTransactionFragment extends Fragment {
                 Toast.makeText(context,"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT).show();
             }
             // update add transactions form with api results
-            etDate.setText(date.toString());
             getView().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
             try {
                 etDate.setText(dateFormat.format(dateFormat.parse(date.toString())));
