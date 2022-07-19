@@ -125,6 +125,8 @@ public class AddTransactionFragment extends Fragment {
                 R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tiCategory.setAdapter(adapter);
+        // disable keyboard input
+        tiCategory.setInputType(InputType.TYPE_NULL);
 
         // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener((View v) -> {
@@ -209,6 +211,12 @@ public class AddTransactionFragment extends Fragment {
             }
             // update add transactions form with api results
             etDate.setText(date.toString());
+            getView().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+            try {
+                etDate.setText(dateFormat.format(dateFormat.parse(date.toString())));
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
             tiAmount.setText(total.toString());
             tiDescription.setText(merchant.toString() + " purchase");
         }
@@ -248,6 +256,7 @@ public class AddTransactionFragment extends Fragment {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
 
+        getView().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         // async api call
         ApiCall apiCall = new ApiCall();
         apiCall.execute();
