@@ -175,6 +175,14 @@ public class AddTransactionFragment extends Fragment {
         }
     }
 
+    // prevent first text field from automatically being selected
+    @Override
+    public void onResume() {
+        super.onResume();
+        View current = getActivity().getCurrentFocus();
+        if (current != null) current.clearFocus();
+    }
+
     // async call to receipt scanner
     private class ApiCall extends AsyncTask<Void, Void, String> {
         @Override
