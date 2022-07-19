@@ -71,6 +71,9 @@ public class TransactionListFragment extends Fragment {
         // (placeholder button, will replace with some representation of overall spending limit)
         cardOverview = view.findViewById(R.id.cardOverview);
         cardOverview.setOnClickListener((View v) -> goSpendingLimitOverview());
+
+        // hide message if there are no transactions
+        view.findViewById(R.id.emptyRvLayout).setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -127,6 +130,12 @@ public class TransactionListFragment extends Fragment {
                 allTransactions.clear();
                 allTransactions.addAll(transactions);
                 adapter.notifyDataSetChanged();
+                if (transactions.isEmpty()) {
+                    getView().findViewById(R.id.emptyRvLayout).setVisibility(View.VISIBLE);
+                } else {
+                    allTransactions.addAll(transactions);
+                    adapter.notifyDataSetChanged();
+                }
             }
         });
     }
