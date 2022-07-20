@@ -64,6 +64,8 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/fileprovider" />
         </provider>
+
+        <receiver android:name=".AlarmReceiver" />
     </application>
 
 </manifest>

@@ -2,10 +2,17 @@ package com.example.coinage;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.parse.ParseException;
+
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -44,6 +51,8 @@ public class LoginActivity extends AppCompatActivity {
                 String email = tiEmail.getText().toString();
                 String password = tiPassword.getText().toString();
                 loginUser(email, password);
+                createNotificationChannel();
+                setAlarm();
             });
 
         tvRegister = findViewById(R.id.tvRegister);
@@ -80,5 +89,34 @@ public class LoginActivity extends AppCompatActivity {
                 goMainActivity();
             }
         });
+    }
+
+    private AlarmManager alarmManager;
+    private PendingIntent pendingIntent;
+    
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "CoinageNotificationChannel";
+            String description = "Notification Channel for Coinage";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("coinage", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    private void setAlarm() {
+        alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+
+        // current implementation sets a repeating alarm for every 10 seconds
+        // to make the feature easier to test/showcase
+        pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                System.currentTimeMillis(),
+                10000,
+                pendingIntent);
     }
 }
