@@ -35,6 +35,7 @@ public class ProfileFragment extends Fragment {
     private ConstraintLayout clLogOut;
     private ConstraintLayout clEditInfo;
     private ConstraintLayout clSetLimits;
+    private ConstraintLayout clNotifications;
     private TextView tvSpent;
     private TextView tvNumTransactions;
 
@@ -63,6 +64,9 @@ public class ProfileFragment extends Fragment {
 
         clSetLimits = view.findViewById(R.id.clSetLimits);
         clSetLimits.setOnClickListener((View v) -> goSetLimits());
+
+        clNotifications = view.findViewById(R.id.clNotifications);
+        clNotifications.setOnClickListener((View v) -> goNotificationSettings());
 
         tvSpent = view.findViewById(R.id.tvSpent);
         tvNumTransactions = view.findViewById(R.id.tvNumTransactions);
@@ -99,6 +103,16 @@ public class ProfileFragment extends Fragment {
                     R.anim.fade_in,
                     R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new SetSpendingLimitsFragment());
+        fragmentTransaction.commit();
+    }
+
+    private void goNotificationSettings() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frameLayout, new NotificationSettingsFragment());
         fragmentTransaction.commit();
     }
 
