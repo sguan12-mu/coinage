@@ -39,6 +39,8 @@ android {
     }
 }
 
+apply plugin: 'com.android.application'
+
 dependencies {
 
     implementation 'androidx.appcompat:appcompat:1.4.2'
@@ -56,4 +58,7 @@ dependencies {
 
     // Material Design 3
     implementation 'com.google.android.material:material:1.5.0'
+
+    // Google OAuth2
+    implementation 'com.google.android.gms:play-services-auth:20.2.0'
 }

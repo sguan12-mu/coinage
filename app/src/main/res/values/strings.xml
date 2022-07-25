@@ -9,6 +9,9 @@
     <!--spinner prompt-->
     <string name="prompt">categories</string>
 
+    <!-- google oauth -->
+    <string name="google_client_id">688581340511-niasmvfpdeh1kpt8ccgufc4a8sf5ob4i.apps.googleusercontent.com</string>
+
     <!-- Categories array for spinner (adding transactions) options -->
     <array name="categoriesAdd">
         <item>Food</item>
