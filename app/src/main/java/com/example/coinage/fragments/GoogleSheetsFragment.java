@@ -64,20 +64,12 @@ public class GoogleSheetsFragment extends Fragment {
 
         btnGoogleSignIn = view.findViewById(R.id.btnGoogleSignIn);
         btnGoogleSignIn.setOnClickListener((View v) -> {
-            switch (v.getId()) {
-                case R.id.btnGoogleSignIn:
-                    signIn();
-                    break;
-            }
+            signIn();
         });
 
         btnGoogleSignOut = view.findViewById(R.id.btnGoogleSignOut);
         btnGoogleSignOut.setOnClickListener((View v) -> {
-            switch (v.getId()) {
-                case R.id.btnGoogleSignOut:
-                    signOut();
-                    break;
-            }
+            signOut();
         });
     }
 
