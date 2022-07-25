@@ -7,37 +7,73 @@
     tools:context=".fragments.profile.ProfileFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSetLimits"
+    android:id="@+id/clSetLimits"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintTop_toBottomOf="@+id/clEditInfo">
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="32dp"
+        android:text=">"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvDescription3" />
+
+    <View
+        android:id="@+id/divider5"
+        android:layout_width="360dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvDescription3" />
+
+    <TextView
+        android:id="@+id/tvDescription3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        android:text="Set Spending Limits"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clNotifications"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/clEditInfo">
+        app:layout_constraintTop_toBottomOf="@+id/clSetLimits">
 
         <TextView
-            android:id="@+id/textView9"
+            android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="32dp"
             android:text=">"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvDescription3" />
+            app:layout_constraintTop_toTopOf="@+id/tvDescription5" />
 
         <View
-            android:id="@+id/divider5"
+            android:id="@+id/divider6"
             android:layout_width="360dp"
             android:layout_height="1dp"
             android:layout_marginTop="16dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvDescription3" />
+            app:layout_constraintTop_toBottomOf="@+id/tvDescription5" />
 
         <TextView
-            android:id="@+id/tvDescription3"
+            android:id="@+id/tvDescription5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:text="Set Spending Limits"
+            android:text="Change Notification Preferences"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -83,7 +119,7 @@
         android:id="@+id/clLogOut"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/clSetLimits">
+        app:layout_constraintTop_toBottomOf="@+id/clNotifications">
 
         <TextView
             android:id="@+id/tvDescription4"
