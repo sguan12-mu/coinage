@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.example.coinage.R;
 import com.example.coinage.TransactionsAdapter;
+import com.example.coinage.models.EndlessScrollingViewScrollListener;
 import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
 import com.google.android.material.card.MaterialCardView;
@@ -34,12 +35,16 @@ import java.util.List;
 // home page of app, displays a list of all tracked transactions
 public class TransactionListFragment extends Fragment {
     public static final String TAG = "TransactionListFragment";
+    public static final int NO_SKIP = 0;
+    public static final int QUERY_LIMIT = 20;
 
     private RecyclerView rvTransactions;
     private TransactionsAdapter adapter;
     private List<Transaction> allTransactions;
     private MaterialCardView cardOverview;
     private TextView tvTotalSpending;
+
+    private EndlessScrollingViewScrollListener scrollListener;
 
     public TransactionListFragment() {
         // Required empty public constructor
@@ -62,8 +67,15 @@ public class TransactionListFragment extends Fragment {
         // set up recycler view
         rvTransactions.setAdapter(adapter);
         rvTransactions.setLayoutManager(linearLayoutManager);
-        // populate recycler view with transactions
-        queryTransactions();
+        // endless scrolling
+        scrollListener = new EndlessScrollingViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // skip the already loaded transactions if endless scrolling
+                queryTransactions(allTransactions.size());
+            }
+        };
+        rvTransactions.addOnScrollListener(scrollListener);
 
         tvTotalSpending = view.findViewById(R.id.tvDateDetail);
         fetchAndUpdateTotalSpending();
@@ -71,18 +83,25 @@ public class TransactionListFragment extends Fragment {
         // (placeholder button, will replace with some representation of overall spending limit)
         cardOverview = view.findViewById(R.id.cardOverview);
         cardOverview.setOnClickListener((View v) -> goSpendingLimitOverview());
+
+        // populate recycler view with transactions
+        queryTransactions(NO_SKIP);
+
+        // only show message if there are no transactions
+        view.findViewById(R.id.emptyRvLayout).setVisibility(View.INVISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         // query again once returned to this fragment
-        queryTransactions();
+        queryTransactions(NO_SKIP);
     }
 
     private void fetchAndUpdateTotalSpending() {
         // calculate total spendings
         ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
+        transactionQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
         transactionQuery.findInBackground(new FindCallback<Transaction>() {
             BigDecimal totalSpendings = BigDecimal.valueOf(0);
             @Override
@@ -109,11 +128,12 @@ public class TransactionListFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
-    private void queryTransactions() {
+    private void queryTransactions(int skip) {
         ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
         // set query parameters
         query.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
-        query.setLimit(10);
+        query.setLimit(QUERY_LIMIT);
+        query.setSkip(skip);
         query.addDescendingOrder("date");
         query.findInBackground(new FindCallback<Transaction>() {
             @Override
@@ -124,7 +144,13 @@ public class TransactionListFragment extends Fragment {
                     return;
                 }
                 // save received posts to list and notify adapter of new data
-                allTransactions.clear();
+                if (skip == NO_SKIP) {
+                    adapter.clear();
+                    // if user has no transactions, show message
+                    if (transactions.isEmpty()) {
+                        getView().findViewById(R.id.emptyRvLayout).setVisibility(View.VISIBLE);
+                    }
+                }
                 allTransactions.addAll(transactions);
                 adapter.notifyDataSetChanged();
             }

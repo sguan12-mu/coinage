@@ -59,7 +59,9 @@ public class EditPasswordFragment extends Fragment {
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                if (user == null) {
+                if (currentPassword.equals("") || newPassword.equals("") || newPasswordConfirm.equals("")) {
+                    Toast.makeText(getContext(), "Please complete all fields", Toast.LENGTH_SHORT).show();
+                } else if (user == null) {
                     Toast.makeText(getContext(), "Incorrect current password", Toast.LENGTH_SHORT).show();
                 } else if (!newPassword.equals(newPasswordConfirm)) {
                     Toast.makeText(getContext(), "Passwords don't match", Toast.LENGTH_SHORT).show();

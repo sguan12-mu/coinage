@@ -125,25 +125,39 @@ public class AddTransactionFragment extends Fragment {
                 R.layout.custom_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         tiCategory.setAdapter(adapter);
+        // disable keyboard input
+        tiCategory.setInputType(InputType.TYPE_NULL);
 
         // on submit, get user input and save transaction details to backend
         btnAdd.setOnClickListener((View v) -> {
             ParseUser currentUser = ParseUser.getCurrentUser();
-            BigDecimal amount = new BigDecimal(tiAmount.getText().toString());
+            String stringDate = etDate.getText().toString();
+            if (stringDate.equals("")) {
+                Toast.makeText(getContext(), "Date of purchase should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            String stringAmount = tiAmount.getText().toString();
+            if (stringAmount.equals("")) {
+                Toast.makeText(getContext(), "Purchase cost should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String category = tiCategory.getEditableText().toString();
+            if (category.equals("")) {
+                Toast.makeText(getContext(), "Category should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             String description = tiDescription.getText().toString();
+            if (description.equals("")) {
+                Toast.makeText(getContext(), "Description should not be blank", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Date date;
             try {
-                date = dateFormat.parse(etDate.getText().toString());
+                date = dateFormat.parse(stringDate);
+                BigDecimal amount = new BigDecimal(stringAmount);
                 saveTransaction(currentUser, date, amount, category, description);
                 // return to Home view after transaction is saved
-                FragmentTransaction fragmentTransaction = getActivity()
-                        .getSupportFragmentManager().beginTransaction()
-                        .setCustomAnimations(
-                            R.anim.fade_in,
-                            R.anim.fade_out);
-                fragmentTransaction.replace(R.id.frameLayout, new TransactionListFragment());
-                fragmentTransaction.commit();
+                MainActivity.bottomNavigationView.setSelectedItemId(R.id.action_home);
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }
@@ -159,6 +173,14 @@ public class AddTransactionFragment extends Fragment {
         if (bundle != null && bundle.getBoolean(MainActivity.class.getSimpleName())) {
             scanReceipt();
         }
+    }
+
+    // prevent first text field from automatically being selected
+    @Override
+    public void onResume() {
+        super.onResume();
+        View current = getActivity().getCurrentFocus();
+        if (current != null) current.clearFocus();
     }
 
     // async call to receipt scanner
@@ -190,7 +212,12 @@ public class AddTransactionFragment extends Fragment {
                 Toast.makeText(context,"Receipt unclear, retake photo for better results!", Toast.LENGTH_SHORT).show();
             }
             // update add transactions form with api results
-            etDate.setText(date.toString());
+            getView().findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+            try {
+                etDate.setText(dateFormat.format(dateFormat.parse(date.toString())));
+            } catch (java.text.ParseException e) {
+                e.printStackTrace();
+            }
             tiAmount.setText(total.toString());
             tiDescription.setText(merchant.toString() + " purchase");
         }
@@ -230,6 +257,7 @@ public class AddTransactionFragment extends Fragment {
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
         }
 
+        getView().findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         // async api call
         ApiCall apiCall = new ApiCall();
         apiCall.execute();

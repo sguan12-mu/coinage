@@ -18,8 +18,9 @@
 
     <ScrollView
         android:layout_width="319dp"
-        android:layout_height="560dp"
+        android:layout_height="600dp"
         android:layout_marginTop="13dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvDateDetail">
@@ -27,7 +28,7 @@
         <LinearLayout
             android:id="@+id/chartContainer"
             android:layout_width="320dp"
-            android:layout_height="570dp"
+            android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"

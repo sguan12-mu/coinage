@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.example.coinage.LoginActivity;
 import com.example.coinage.R;
+import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
 import com.parse.FindCallback;
 import com.parse.ParseException;
@@ -104,6 +105,7 @@ public class ProfileFragment extends Fragment {
     private void fetchAndUpdateTransactionCount() {
         // calculate total spendings
         ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
+        transactionQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
         transactionQuery.findInBackground(new FindCallback<Transaction>() {
             BigDecimal totalSpendings = BigDecimal.valueOf(0);
             @Override
