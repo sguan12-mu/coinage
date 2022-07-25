@@ -15,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.coinage.R;
@@ -45,6 +46,7 @@ public class TransactionListFragment extends Fragment {
     private TextView tvTotalSpending;
 
     private EndlessScrollingViewScrollListener scrollListener;
+    private ImageButton ibGoogleSheets;
 
     public TransactionListFragment() {
         // Required empty public constructor
@@ -89,6 +91,9 @@ public class TransactionListFragment extends Fragment {
 
         // only show message if there are no transactions
         view.findViewById(R.id.emptyRvLayout).setVisibility(View.INVISIBLE);
+
+        ibGoogleSheets = view.findViewById(R.id.ibGoogleSheets);
+        ibGoogleSheets.setOnClickListener((View v) -> goGoogleSheets());
     }
 
     @Override
@@ -125,6 +130,16 @@ public class TransactionListFragment extends Fragment {
                     R.anim.fade_in,
                     R.anim.fade_out);
         fragmentTransaction.replace(R.id.frameLayout, new SpendingLimitChartsFragment());
+        fragmentTransaction.commit();
+    }
+
+    private void goGoogleSheets() {
+        FragmentTransaction fragmentTransaction = getActivity()
+                .getSupportFragmentManager().beginTransaction()
+                .setCustomAnimations(
+                        R.anim.fade_in,
+                        R.anim.fade_out);
+        fragmentTransaction.replace(R.id.frameLayout, new GoogleSheetsFragment());
         fragmentTransaction.commit();
     }
 
