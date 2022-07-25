@@ -13,9 +13,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Intent i = new Intent(context, LoginActivity.class);
+        Intent loginIntent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, i, 0);
+        PendingIntent pendingSendNotificationIntent = PendingIntent.getActivity(context, 0, loginIntent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "coinage")
                 .setSmallIcon(R.drawable.coinlogo)
@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setVibrate(new long[] { 1000 })
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingSendNotificationIntent);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
         notificationManagerCompat.notify(0, builder.build());

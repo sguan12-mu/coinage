@@ -84,11 +84,11 @@ public class NotificationSettingsFragment extends Fragment {
 
     private void setAlarm() {
         alarmManager = (AlarmManager) getContext().getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(getContext(), AlarmReceiver.class);
+        Intent receivedAlarmIntent = new Intent(getContext(), AlarmReceiver.class);
 
         // current implementation sets a repeating alarm for every 10 seconds
         // to make the feature easier to test/showcase
-        pendingIntent = PendingIntent.getBroadcast(getContext(),0,intent,PendingIntent.FLAG_IMMUTABLE);
+        pendingIntent = PendingIntent.getBroadcast(getContext(),0,receivedAlarmIntent,PendingIntent.FLAG_IMMUTABLE);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
                 System.currentTimeMillis(),
                 10000,
