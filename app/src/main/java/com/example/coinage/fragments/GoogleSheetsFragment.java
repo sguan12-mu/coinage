@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.coinage.R;
+import com.example.coinage.models.SpendingLimit;
+import com.example.coinage.models.Transaction;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -26,6 +28,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeTokenRequest;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
+import com.google.api.client.googleapis.json.GoogleJsonError;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
@@ -38,11 +42,22 @@ import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
+import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
+import com.google.api.services.sheets.v4.model.ValueRange;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.common.collect.ImmutableSet;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
+import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -56,10 +71,14 @@ public class GoogleSheetsFragment extends Fragment {
     private static final int RC_SIGN_IN = 0;
 
     public static final String TOKEN_SERVER_URL = "https://oauth2.googleapis.com/token";
+    public static final String CREDENTIALS_TYPE = "authorized_user";
+    private static final String RANGE = "Sheet1!A:D";
+    private static final String VALUE_INPUT_OPTION = "USER_ENTERED";
     private String CLIENT_ID;
     private String CLIENT_SECRET;
     private String serverAuthCode;
     private JSONObject credentialsJSON;
+    private List<List<Object>> spreadsheetValues;
 
     public GoogleSheetsFragment() {
         // Required empty public constructor
@@ -127,9 +146,32 @@ public class GoogleSheetsFragment extends Fragment {
             serverAuthCode = account.getServerAuthCode();
             // Signed in successfully
             Log.i(TAG, "OAuth successful");
-            // create a spreadsheet asynchronously
-            GoogleSheetsFragment.CreateSpreadsheet createSpreadsheet = new GoogleSheetsFragment.CreateSpreadsheet();
-            createSpreadsheet.execute();
+
+            // create the values list that will be written to google sheets
+            spreadsheetValues = new ArrayList<>();
+            spreadsheetValues.add(Arrays.asList("Date", "Category", "Amount", "Description"));
+            // query all transactions and add them to values array
+            ParseQuery<Transaction> query = ParseQuery.getQuery(Transaction.class);
+            query.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
+            query.addDescendingOrder("date");
+            query.findInBackground(new FindCallback<Transaction>() {
+                @Override
+                public void done(List<Transaction> transactions, ParseException e) {
+                    // check for errors
+                    if (e != null) {
+                        Log.e(TAG, "Issue with getting transactions", e);
+                        return;
+                    }
+                    for (Transaction transaction : transactions) {
+                        spreadsheetValues.add(Arrays.asList(transaction.getDate(), transaction.getCategory(),
+                                transaction.getAmount(), transaction.getDescription()));
+                    }
+                }
+            });
+
+            // create and write to google sheets asynchronously
+            GoogleSheetsFragment.ExportTransactions exportTransactions = new GoogleSheetsFragment.ExportTransactions();
+            exportTransactions.execute();
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -137,8 +179,45 @@ public class GoogleSheetsFragment extends Fragment {
         }
     }
 
-    // create a spreadsheet asynchronously
-    private class CreateSpreadsheet extends AsyncTask<Void, Void, Void> {
+    private void createSpreadsheet(HttpRequestInitializer requestInitializer) throws IOException, JSONException {
+        // Create the sheets API client
+        Sheets service = new Sheets.Builder(new NetHttpTransport(),
+                GsonFactory.getDefaultInstance(),
+                requestInitializer)
+                .setApplicationName("Sheets samples")
+                .build();
+
+        // Create new spreadsheet with a title
+        Spreadsheet spreadsheet = new Spreadsheet()
+                .setProperties(new SpreadsheetProperties()
+                .setTitle("Coinage Transaction History"));
+
+        spreadsheet = service.spreadsheets().create(spreadsheet)
+                .setFields("spreadsheetId")
+                .execute();
+
+        // Prints the new spreadsheet id
+        String spreadsheetId = spreadsheet.getSpreadsheetId();
+        Log.i(TAG, "Spreadsheet ID: " + spreadsheetId);
+
+        UpdateValuesResponse result = null;
+
+        try {
+            // Updates the values in the specified range.
+            ValueRange requestBody = new ValueRange()
+                    .setValues(spreadsheetValues);
+            result = service.spreadsheets().values().update(spreadsheetId, RANGE, requestBody)
+                    .setValueInputOption(VALUE_INPUT_OPTION)
+                    .execute();
+            Log.i(TAG, result.getUpdatedCells() + " cells updated");
+        } catch (GoogleJsonResponseException e) {
+            GoogleJsonError error = e.getDetails();
+            Log.e(TAG, String.valueOf(error.getMessage()));
+        }
+    }
+
+    // export transactions to google sheets asynchronously
+    private class ExportTransactions extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
@@ -158,7 +237,7 @@ public class GoogleSheetsFragment extends Fragment {
 
                 // create google credentials for the http request
                 credentialsJSON = new JSONObject();
-                credentialsJSON.put("type", "authorized_user");
+                credentialsJSON.put("type", CREDENTIALS_TYPE);
                 credentialsJSON.put("refresh_token", refreshToken);
                 credentialsJSON.put("client_id", CLIENT_ID);
                 credentialsJSON.put("client_secret", CLIENT_SECRET);
@@ -168,24 +247,8 @@ public class GoogleSheetsFragment extends Fragment {
                 HttpRequestInitializer requestInitializer = new HttpCredentialsAdapter(
                         googleCredentials);
 
-                // Create the sheets API client
-                Sheets service = new Sheets.Builder(new NetHttpTransport(),
-                    GsonFactory.getDefaultInstance(),
-                    requestInitializer)
-                    .setApplicationName("Sheets samples")
-                    .build();
-
-                // Create new spreadsheet with a title
-                Spreadsheet spreadsheet = new Spreadsheet()
-                    .setProperties(new SpreadsheetProperties()
-                    .setTitle("Coinage Transaction History"));
-
-                spreadsheet = service.spreadsheets().create(spreadsheet)
-                        .setFields("spreadsheetId")
-                        .execute();
-
-                // Prints the new spreadsheet id
-                Log.i(TAG, "Spreadsheet ID: " + spreadsheet.getSpreadsheetId());
+                // create and populate spreadsheet
+                createSpreadsheet(requestInitializer);
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (JSONException e) {
