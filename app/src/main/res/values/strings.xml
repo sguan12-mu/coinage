@@ -11,6 +11,7 @@
 
     <!-- google oauth -->
     <string name="google_client_id">688581340511-niasmvfpdeh1kpt8ccgufc4a8sf5ob4i.apps.googleusercontent.com</string>
+    <string name="google_client_secret">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</string>
 
     <!-- Categories array for spinner (adding transactions) options -->
     <array name="categoriesAdd">
