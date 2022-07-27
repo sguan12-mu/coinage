@@ -95,7 +95,7 @@
     <ScrollView
         android:id="@+id/swipeContainer"
         android:layout_width="400dp"
-        android:layout_height="550dp"
+        android:layout_height="570dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

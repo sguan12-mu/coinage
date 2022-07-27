@@ -18,7 +18,7 @@
 
     <ScrollView
         android:layout_width="319dp"
-        android:layout_height="600dp"
+        android:layout_height="650dp"
         android:layout_marginTop="13dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
