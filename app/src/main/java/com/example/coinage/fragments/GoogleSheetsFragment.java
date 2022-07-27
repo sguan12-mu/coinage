@@ -35,7 +35,6 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.sheets.v4.Sheets;
-import com.google.api.services.sheets.v4.SheetsScopes;
 import com.google.api.services.sheets.v4.model.Spreadsheet;
 import com.google.api.services.sheets.v4.model.SpreadsheetProperties;
 
@@ -44,20 +43,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import com.google.api.services.sheets.v4.model.UpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.GoogleCredentials;
-import com.google.common.collect.ImmutableSet;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-import org.checkerframework.checker.units.qual.A;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -119,6 +115,7 @@ public class GoogleSheetsFragment extends Fragment {
         btnGoogleSignOut = view.findViewById(R.id.btnGoogleSignOut);
         btnGoogleSignOut.setOnClickListener((View v) -> {
             signOut();
+            btnGoogleSignOut.setVisibility(View.INVISIBLE);
         });
     }
 
@@ -169,6 +166,7 @@ public class GoogleSheetsFragment extends Fragment {
                 }
             });
 
+            getView().findViewById(R.id.progressBarGoogle).setVisibility(View.VISIBLE);
             // create and write to google sheets asynchronously
             GoogleSheetsFragment.ExportTransactions exportTransactions = new GoogleSheetsFragment.ExportTransactions();
             exportTransactions.execute();
@@ -217,9 +215,9 @@ public class GoogleSheetsFragment extends Fragment {
     }
 
     // export transactions to google sheets asynchronously
-    private class ExportTransactions extends AsyncTask<Void, Void, Void> {
+    private class ExportTransactions extends AsyncTask<Void, Void, Boolean> {
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Boolean doInBackground(Void... voids) {
             try {
                 // use the server auth code to exchange for the refresh token
                 GoogleTokenResponse tokenResponse = new GoogleAuthorizationCodeTokenRequest(
@@ -254,11 +252,17 @@ public class GoogleSheetsFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return null;
+            return true;
         }
 
-        protected void onPostExecute() {
-            Log.i(TAG, "Spreadsheet created successfully!");
+        @Override
+        protected void onPostExecute(Boolean doInBackgroundResult) {
+            if (doInBackgroundResult) {
+                Log.i(TAG, "Spreadsheet created successfully!");
+                btnGoogleSignOut.setVisibility(View.VISIBLE);
+                getView().findViewById(R.id.progressBarGoogle).setVisibility(View.INVISIBLE);
+                Toast.makeText(getContext(), "Transactions exported successfully", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

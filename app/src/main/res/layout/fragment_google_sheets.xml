@@ -8,11 +8,13 @@
 
     <TextView
         android:id="@+id/tvGoogleSheets"
-        android:layout_width="wrap_content"
+        style="@style/TextAppearance.Coinage.Headline2"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="74dp"
-        android:text="Export transactions to Google Sheets"
-        android:textSize="12sp"
+        android:layout_marginTop="120dp"
+        android:gravity="center"
+        android:text="Sign in to Google to export transactions to Google Sheets"
+        android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -28,14 +30,32 @@
 
     </com.google.android.gms.common.SignInButton>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGoogleSignOut"
-        android:layout_width="wrap_content"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:text="Log out"
+        android:textSize="14sp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn"
+        tools:visibility="visible" />
+
+    <ProgressBar
+        android:id="@+id/progressBarGoogle"
+        style="@android:attr/progressBarStyle"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginTop="32dp"
-        android:text="Button"
+        android:indeterminateTint="@color/yellow"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn" />
+        app:layout_constraintTop_toBottomOf="@+id/btnGoogleSignIn"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
