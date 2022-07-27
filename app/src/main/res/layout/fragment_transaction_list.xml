@@ -52,7 +52,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
-                android:text="$0.00"
                 android:textSize="30dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
@@ -95,13 +94,12 @@
 
     <ScrollView
         android:id="@+id/swipeContainer"
-        android:layout_width="360dp"
+        android:layout_width="400dp"
         android:layout_height="550dp"
-        android:layout_marginTop="0dp"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardOverview"
-        android:scrollbars="none" >
+        app:layout_constraintTop_toBottomOf="@+id/cardOverview">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvTransactions"
