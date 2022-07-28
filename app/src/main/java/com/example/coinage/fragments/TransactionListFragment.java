@@ -23,8 +23,16 @@ import com.example.coinage.TransactionsAdapter;
 import com.example.coinage.models.EndlessScrollingViewScrollListener;
 import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.material.card.MaterialCardView;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
@@ -44,9 +52,12 @@ public class TransactionListFragment extends Fragment {
     private List<Transaction> allTransactions;
     private MaterialCardView cardOverview;
     private TextView tvTotalSpending;
-
+    private Number overallSpendingLimit;
+    private BigDecimal totalSpendings;
     private EndlessScrollingViewScrollListener scrollListener;
     private ImageButton ibGoogleSheets;
+
+    private PieChart overallPie;
 
     public TransactionListFragment() {
         // Required empty public constructor
@@ -79,6 +90,10 @@ public class TransactionListFragment extends Fragment {
         };
         rvTransactions.addOnScrollListener(scrollListener);
 
+        overallPie = view.findViewById(R.id.overallPie);
+        overallPie.setNoDataText("");
+        overallPie.invalidate();
+
         tvTotalSpending = view.findViewById(R.id.tvDateDetail);
         fetchAndUpdateTotalSpending();
 
@@ -103,12 +118,55 @@ public class TransactionListFragment extends Fragment {
         queryTransactions(NO_SKIP);
     }
 
+    private void createPieChart() {
+        // find overall spending limit
+        ParseQuery<SpendingLimit> spendingLimitQuery = ParseQuery.getQuery(SpendingLimit.class);
+        spendingLimitQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
+        spendingLimitQuery.whereEqualTo(SpendingLimit.KEY_CATEGORY, Transaction.CATEGORY_OVERALL);
+        spendingLimitQuery.getFirstInBackground(new GetCallback<SpendingLimit>() {
+            @Override
+            public void done(SpendingLimit spendingLimit, ParseException e) {
+                if (spendingLimit != null) {
+                    overallSpendingLimit = spendingLimit.getAmount();
+                    List<PieEntry> entries = new ArrayList<PieEntry>();
+                    entries.add(new PieEntry(totalSpendings.intValue(), "Overall"));
+                    Float spendingLimitDifference = overallSpendingLimit.floatValue() - totalSpendings.floatValue();
+                    if (spendingLimitDifference.floatValue() < 0) {
+                        entries.add(new PieEntry(0, "Overall"));
+                    } else {
+                        entries.add(new PieEntry(spendingLimitDifference.intValue(), "Overall"));
+                    }
+                    PieDataSet data = new PieDataSet(entries, "Label");
+                    ArrayList<Integer> colors = new ArrayList<>();
+                    colors.add(getResources().getColor(R.color.dark_yellow));
+                    colors.add(getResources().getColor(R.color.dark_gray));
+                    data.setColors(colors);
+                    PieData pieData = new PieData(data);
+                    overallPie.setData(pieData);
+
+                    overallPie.setHoleRadius(60);
+                    int percentage = (int) (totalSpendings.floatValue() / overallSpendingLimit.floatValue() * 100);
+                    overallPie.setCenterText(percentage + "%");
+                    overallPie.setCenterTextSize(16);
+                    overallPie.setCenterTextColor(getResources().getColor(R.color.dark_gray));
+                    overallPie.setDrawHoleEnabled(true);
+                    overallPie.setHighlightPerTapEnabled(false);
+                    overallPie.getDescription().setEnabled(false);
+                    overallPie.getLegend().setEnabled(false);
+                    overallPie.setDrawEntryLabels(false);
+                    overallPie.getData().setDrawValues(false);
+                    overallPie.invalidate();
+                }
+            }
+        });
+    }
+
     private void fetchAndUpdateTotalSpending() {
+        totalSpendings = BigDecimal.valueOf(0);
         // calculate total spendings
         ParseQuery<Transaction> transactionQuery = ParseQuery.getQuery(Transaction.class);
         transactionQuery.whereEqualTo(SpendingLimit.KEY_USER, ParseUser.getCurrentUser());
         transactionQuery.findInBackground(new FindCallback<Transaction>() {
-            BigDecimal totalSpendings = BigDecimal.valueOf(0);
             @Override
             public void done(List<Transaction> transactions, ParseException e) {
                 if (e != null) {
@@ -119,6 +177,7 @@ public class TransactionListFragment extends Fragment {
                     totalSpendings = totalSpendings.add(BigDecimal.valueOf(transaction.getAmount().floatValue()));
                 }
                 tvTotalSpending.setText("$" + String.format("%.2f",totalSpendings));
+                createPieChart();
             }
         });
     }
