@@ -129,12 +129,12 @@ public class TransactionListFragment extends Fragment {
                 if (spendingLimit != null) {
                     overallSpendingLimit = spendingLimit.getAmount();
                     List<PieEntry> entries = new ArrayList<PieEntry>();
-                    entries.add(new PieEntry(totalSpendings.intValue(), "Overall"));
+                    entries.add(new PieEntry(totalSpendings.floatValue()));
                     Float spendingLimitDifference = overallSpendingLimit.floatValue() - totalSpendings.floatValue();
                     if (spendingLimitDifference.floatValue() < 0) {
-                        entries.add(new PieEntry(0, "Overall"));
+                        entries.add(new PieEntry(0));
                     } else {
-                        entries.add(new PieEntry(spendingLimitDifference.intValue(), "Overall"));
+                        entries.add(new PieEntry(spendingLimitDifference.floatValue()));
                     }
                     PieDataSet data = new PieDataSet(entries, "Label");
                     ArrayList<Integer> colors = new ArrayList<>();
