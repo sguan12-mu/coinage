@@ -256,8 +256,8 @@ public class GoogleSheetsFragment extends Fragment {
         }
 
         @Override
-        protected void onPostExecute(Boolean doInBackgroundResult) {
-            if (doInBackgroundResult) {
+        protected void onPostExecute(Boolean isSuccess) {
+            if (isSuccess) {
                 Log.i(TAG, "Spreadsheet created successfully!");
                 btnGoogleSignOut.setVisibility(View.VISIBLE);
                 getView().findViewById(R.id.progressBarGoogle).setVisibility(View.INVISIBLE);
