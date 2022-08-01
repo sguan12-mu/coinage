@@ -15,10 +15,10 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         Intent loginIntent = new Intent(context, LoginActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingSendNotificationIntent = PendingIntent.getActivity(context, 0, loginIntent, 0);
+        PendingIntent pendingSendNotificationIntent = PendingIntent.getActivity(context, 0, loginIntent, PendingIntent.FLAG_IMMUTABLE);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "coinage")
-                .setSmallIcon(R.drawable.coinlogo)
+                .setSmallIcon(R.drawable.logo)
                 .setContentTitle("How was your day?")
                 .setContentText("Remember to log your daily transactions!")
                 .setAutoCancel(true)
