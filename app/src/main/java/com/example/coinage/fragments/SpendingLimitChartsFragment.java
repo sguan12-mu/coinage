@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Space;
 import android.widget.TextView;
 
@@ -18,16 +20,23 @@ import com.example.coinage.R;
 import com.example.coinage.models.SpendingLimit;
 import com.example.coinage.models.Transaction;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.google.android.material.card.MaterialCardView;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -98,34 +107,70 @@ public class SpendingLimitChartsFragment extends Fragment {
     }
 
     private void generateChart (View view, BigDecimal spendingLimitAmount, BigDecimal categoryCumulativeAmount, String label) {
-        // generate a chart for each pairing
-        List<BarEntry> entries = new ArrayList<BarEntry>();
-        entries.add(new BarEntry(1, categoryCumulativeAmount.floatValue()));
-        entries.add(new BarEntry(2, spendingLimitAmount.floatValue()));
-        BarDataSet data = new BarDataSet(entries, "Label");
-        data.setColor(getResources().getColor(R.color.yellow));
-        BarData barData = new BarData(data);
+        // calculate and set values
+        PieChart chart = new PieChart(getContext());
+        List<PieEntry> entries = new ArrayList<PieEntry>();
+        entries.add(new PieEntry(categoryCumulativeAmount.floatValue()));
+        Float spendingLimitDifference = spendingLimitAmount.floatValue() - categoryCumulativeAmount.floatValue();
+        if (spendingLimitDifference.floatValue() < 0) {
+            entries.add(new PieEntry(0));
+        } else {
+            entries.add(new PieEntry(spendingLimitDifference.floatValue()));
+        }
+        PieDataSet data = new PieDataSet(entries, "Label");
+        PieData pieData = new PieData(data);
+        chart.setData(pieData);
+        int percentage = (int) (categoryCumulativeAmount.floatValue() / spendingLimitAmount.floatValue() * 100);
+        chart.setCenterText(percentage + "%");
 
-        LinearLayout ll = (LinearLayout) view.findViewById(R.id.chartContainer);
-
+        // create card and other views
+        LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.chartContainer);
+        MaterialCardView materialCardView = new MaterialCardView(getContext());
+        materialCardView.setMinimumHeight(300);
+        materialCardView.setMinimumWidth(1500);
+        materialCardView.setRadius(50);
+        materialCardView.setCardBackgroundColor(getResources().getColor(R.color.yellow));
         TextView chartLabel = new TextView(getContext());
-        chartLabel.setText("Category: " + label);
-        ll.addView(chartLabel);
+        chartLabel.setText(label + ":\n$" + String.format("%.2f", categoryCumulativeAmount));
+        chartLabel.setTextSize(20);
+        RelativeLayout innerLinearLayout = new RelativeLayout(getContext());
+        innerLinearLayout.setMinimumHeight(300);
+        innerLinearLayout.setMinimumWidth(1500);
+        innerLinearLayout.setPadding(80,20,60,20);
 
-        BarChart chart = new BarChart(getContext());
-        ll.addView(chart);
-
-        barData.setValueTextSize(12);
-        chart.setData(barData);
-        chart.setPadding(0,20,0,0);
-        chart.setMinimumHeight(500);
-        chart.getDescription().setEnabled(false);
-        chart.getLegend().setEnabled(false);
-        chart.getXAxis().setEnabled(false);
-        chart.invalidate();
-
+        // add views to the linear layout
+        materialCardView.addView(innerLinearLayout);
+        innerLinearLayout.addView(chartLabel);
+        innerLinearLayout.addView(chart);
+        linearLayout.addView(materialCardView);
         Space space = new Space(getContext());
         space.setMinimumHeight(50);
-        ll.addView(space);
+        linearLayout.addView(space);
+
+        // create chart and stylize
+        ArrayList<Integer> colors = new ArrayList<>();
+        colors.add(getResources().getColor(R.color.dark_yellow));
+        colors.add(getResources().getColor(R.color.dark_gray));
+        data.setColors(colors);
+        chart.setHoleRadius(60);
+        chart.setMinimumHeight(300);
+        chart.setMinimumWidth(300);
+        chart.setCenterTextSize(16);
+        chart.setCenterTextColor(getResources().getColor(R.color.dark_gray));
+        chart.setDrawHoleEnabled(true);
+        chart.setHighlightPerTapEnabled(false);
+        chart.getDescription().setEnabled(false);
+        chart.getLegend().setEnabled(false);
+        chart.setDrawEntryLabels(false);
+        chart.getData().setDrawValues(false);
+        chart.invalidate();
+
+        // set layout params for alignment
+        RelativeLayout.LayoutParams chartLayoutParams = (RelativeLayout.LayoutParams) chart.getLayoutParams();
+        chartLayoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, chart.getId());
+        chart.setLayoutParams(chartLayoutParams);
+        RelativeLayout.LayoutParams chartLabelLayoutParams = (RelativeLayout.LayoutParams) chartLabel.getLayoutParams();
+        chartLabelLayoutParams.addRule(RelativeLayout.CENTER_VERTICAL, chartLabel.getId());
+        chartLabel.setLayoutParams(chartLabelLayoutParams);
     }
 }
