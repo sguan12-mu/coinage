@@ -36,6 +36,7 @@ import com.chaquo.python.android.AndroidPlatform;
 import com.example.coinage.MainActivity;
 import com.example.coinage.R;
 import com.example.coinage.models.Transaction;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.parse.ParseException;
@@ -158,6 +159,16 @@ public class AddTransactionFragment extends Fragment {
                 saveTransaction(currentUser, date, amount, category, description);
                 // return to Home view after transaction is saved
                 MainActivity.bottomNavigationView.setSelectedItemId(R.id.action_home);
+                // show dialog
+                new MaterialAlertDialogBuilder(context, R.style.AlertDialogTheme)
+                        .setTitle("How did you feel about that purchase?")
+                        .setNeutralButton("Regretting it...", (dialog, which) -> {
+                            Log.i(TAG, "User is unhappy with purchase");
+                        })
+                        .setPositiveButton("Good buy!", (dialog, which) -> {
+                            Log.i(TAG, "User is happy with purchase");
+                        })
+                        .show();
             } catch (java.text.ParseException e) {
                 e.printStackTrace();
             }

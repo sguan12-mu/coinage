@@ -3,7 +3,7 @@
     <style name="Theme.Coinage" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/yellow</item>
-        <item name="colorPrimaryVariant">@color/yellow</item>
+        <item name="colorPrimaryVariant">@color/darker_yellow</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#f5a133</item>
@@ -42,5 +42,19 @@
     <style name="ThemeOverlay.App.Card" parent="">
         <item name="colorSurface">@color/yellow</item>
         <item name="colorOnSurface">@color/black</item>
+    </style>
+
+    <!-- dialog popups -->
+    <style name="AlertDialogTheme" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNeutralButtonStyle">@style/NeutralButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NeutralButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/dark_yellow</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/dark_yellow</item>
     </style>
 </resources>
