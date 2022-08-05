@@ -80,7 +80,7 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
 ## Wireframe
 
 <img src="wireframe.jpg" width=600>
-<img src="figmaWireframe.jpg" width=600>
+<img src="figmaWireframe.png" width=600>
 
 ## Schema
 
