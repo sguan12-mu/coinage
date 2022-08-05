@@ -8,7 +8,10 @@
 
 ## Overview
 ### Description
-Coinage helps people who are just becoming financially independent consistently track their spending habits and set spendingLimit limits while encouraging them to be more mindful about what they buy.
+Coinage is a finance app that allows users to track their purchases and set spending limits. The motivation behind the app is to promote mindful spending and to create a simple and enjoyable budgeting experience for those who are just becoming financially independent.
+
+### Final Product
+![gif]()
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
@@ -77,6 +80,7 @@ More details in the PRD: https://docs.google.com/document/d/1F6qHZ98POQ-CXGzxLPp
 ## Wireframe
 
 <img src="wireframe.jpg" width=600>
+<img src="figmaWireframe.jpg" width=600>
 
 ## Schema
 
