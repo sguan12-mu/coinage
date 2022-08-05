@@ -11,7 +11,7 @@
 Coinage is a finance app that allows users to track their purchases and set spending limits. The motivation behind the app is to promote mindful spending and to create a simple and enjoyable budgeting experience for those who are just becoming financially independent.
 
 ### Final Product
-![gif]()
+![gif](demo.gif)
 
 ### App Evaluation
 [Evaluation of your app across the following attributes]
